@@ -102,6 +102,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  
+  /user/authenticate:
+    post:
+      description: Authenticate a user
+      tags:
+        - user
+      requestBody:
+        description: Authentication credentials
+        content:
+          application/json:
+            schema:
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: user@email.com
+                password:
+                  type: string
+                  example: 'StrongPassword23!'
+      responses:
+        '200':
+          description: Authentication token
+          content:
+            application/json:
+              schema:
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+              
   /restaurants:
     get:
       tags:
