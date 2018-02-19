@@ -12,7 +12,6 @@ info:
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-
 paths:
   /plans:
     get:
@@ -26,7 +25,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MembershipPlan'
-                  
   /plans/{id}:
     get:
       description: Returns a single membership plan, by id
@@ -44,7 +42,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MembershipPlan'
-
+  /restaurants:
+    get:
+      tags:
+        - restaurants
+      description: Returns all restaurants
+      responses:
+        '200':
+          description: A list of restaurants.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+  /restaurants/{id}:
+    get:
+      tags:
+        - restaurants
+      description: Returns restaurants based on ID
+      summary: Find restaurants by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: restaurant response
+          content:
+            '*/*' :
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
 components:
   schemas:
     MembershipPlan:
@@ -73,7 +105,6 @@ components:
         totalCost:
           allOf:
             - $ref: '#/components/schemas/Price'
-            
     Price:
       required:
         - amount
@@ -83,3 +114,30 @@ components:
           type: number
         currencyCode:
           type: string
+    Restaurant:
+      type: object
+      required:
+      - name
+      - id
+      properties:
+        id:
+          type: integer
+          example: 0
+        name:
+          type: string
+          example: 'Sushi Samba'
+        description:
+          type: string
+          example: 'The best sushi around'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+    
+    Image:
+      type: object
+      properties:
+        url:
+          type: string
+          description: 'Absolute URL for the image'
+          example: 'https://imgur.com/gallery/u1SZp'
