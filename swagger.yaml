@@ -34,7 +34,19 @@ paths:
           description: id of plan to fetch
           required: true
           schema:
-            type: integer
+            type: number
+        - name: frequency
+          in: query
+          description: payment frequency(i.e monthly or yearly)
+          required: true
+          schema:
+            type: string
+        - name: promoCode
+          in: query
+          description: a promo code to apply to a membership plan
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: A single membership plan
