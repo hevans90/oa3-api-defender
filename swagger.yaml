@@ -311,8 +311,7 @@ components:
     Restaurant:
       allOf:
        - $ref: '#/components/schemas/EntityDetails'
-    
-- type: object
+       - type: object
          properties:
            name:
              example: 'Sushi Samba'
@@ -321,7 +320,7 @@ components:
     CelebrityChef:
       allOf:
        - $ref: '#/components/schemas/EntityDetails'
-- type: object
+       - type: object
          properties:
            name:
              example: 'Gordon Ramsey'
