@@ -101,6 +101,11 @@ paths:
           content:
             application/json:
               schema:
+                User:
+                  required:
+                    - username
+                  properties:
+                    
                 $ref: '#/components/schemas/User'
   
   /user/authenticate:
@@ -113,14 +118,7 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - userName
-                - password
-              properties:
-                userName:
-                  type: string
-                password:
-                  type: string
+              $ref: '#/components/schemas/AuthenticationPayload'
               
       responses:
         '200':
@@ -399,6 +397,16 @@ components:
         email:
           type: string
           example: user@email.com
+    
+    AuthenticationPayload:
+      required:
+        - userName
+        - password
+      properties:
+        userName:
+          type: string
+        password:
+          type: string
     
     Member:
       required:
