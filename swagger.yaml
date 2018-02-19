@@ -63,6 +63,7 @@ paths:
       tags:
         - restaurants
       description: Returns all restaurants
+      summary: Find Restaurants
       responses:
         '200':
           description: A list of restaurants.
@@ -129,6 +130,150 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CelebrityChef'
+  /events:
+    get:
+      tags:
+        - events
+      description: Returns all Events
+      summary: Find Events
+      responses:
+        '200':
+          description: A list of Events.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /events/{id}:
+    get:
+      tags:
+        - events
+      description: Returns Events based on ID
+      summary: Find Events by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single Event.
+          content:
+            '*/*' :
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /artists:
+    get:
+      tags:
+        - artists
+      description: Returns all Artists
+      summary: Find Artists
+      responses:
+        '200':
+          description: A list of Artists.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Artist'
+  /artists/{id}:
+    get:
+      tags:
+        - artists
+      description: Returns Artists based on ID
+      summary: Find Artists by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single Artist.
+          content:
+            '*/*' :
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Artist'
+  /brands:
+    get:
+      tags:
+        - brands
+      description: Returns all Brands
+      summary: Find Brands
+      responses:
+        '200':
+          description: A list of Brands.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Brand'
+  /brands/{id}:
+    get:
+      tags:
+        - brands
+      description: Returns Brands based on ID
+      summary: Find Brands by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single Brand.
+          content:
+            '*/*' :
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Brand'
+  /benefits:
+    get:
+      tags:
+        - benefits
+      description: Returns all Benefits
+      summary: Find Benefits
+      responses:
+        '200':
+          description: A list of Benefits.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Benefit'
+  /benefits/{id}:
+    get:
+      tags:
+        - benefits
+      description: Returns Benefits based on ID
+      summary: Find Benefits by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A single Benefit.
+          content:
+            '*/*' :
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Benefit'
 components:
   schemas:
     MembershipPlan:
@@ -167,9 +312,57 @@ components:
       allOf:
        - $ref: '#/components/schemas/EntityDetails'
     
+- type: object
+         properties:
+           name:
+             example: 'Sushi Samba'
+           description:
+             example: 'The ultimate sushi experience.'
     CelebrityChef:
       allOf:
        - $ref: '#/components/schemas/EntityDetails'
+- type: object
+         properties:
+           name:
+             example: 'Gordon Ramsey'
+           description:
+             example: 'The meanest chef around.'
+    Event:
+      allOf:
+       - $ref: '#/components/schemas/EntityDetails'
+       - type: object
+         properties:
+           name:
+             example: 'Ed Sheeran feat. Teletubbies live at the 02'
+           description:
+             example: 'A seriously meta musical experience.'
+    Artist:
+      allOf:
+       - $ref: '#/components/schemas/EntityDetails'
+       - type: object
+         properties:
+           name:
+             example: 'Pendulum'
+           description:
+             example: 'The best DnB band ever.'
+    Brand:
+      allOf:
+       - $ref: '#/components/schemas/EntityDetails'
+       - type: object
+         properties:
+           name:
+             example: 'Apple'
+           description:
+             example: 'The most overpriced & overrated tech ever :D.'
+    Benefit:
+      allOf:
+       - $ref: '#/components/schemas/EntityDetails'
+       - type: object
+         properties:
+           name:
+             example: 'Free Nandos Butterfly Burger (extra-hot ONLY)'
+           description:
+             example: 'No cowards allowed.'
     EntityDetails:
       type: object
       required:
