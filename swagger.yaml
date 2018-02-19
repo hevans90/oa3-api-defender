@@ -132,7 +132,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthenticationPayload'
+              $ref: '#/components/schemas/UserAuthenticationPayload'
               
       responses:
         '200':
