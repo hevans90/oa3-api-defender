@@ -15,6 +15,8 @@ info:
 paths:
   /plans:
     get:
+      tags:
+        - plans
       description: Returns an array of all membership plans
       responses: 
         '200':
@@ -27,6 +29,8 @@ paths:
                   $ref: '#/components/schemas/MembershipPlan'
   /plans/{id}:
     get:
+      tags:
+        - plans
       description: Returns a single membership plan, by id
       parameters:
         - name: id
@@ -37,13 +41,13 @@ paths:
             type: number
         - name: frequency
           in: query
-          description: payment frequency(i.e monthly or yearly)
+          description: Payment frequency(i.e monthly or yearly)
           required: true
           schema:
             type: string
         - name: promoCode
           in: query
-          description: a promo code to apply to a membership plan
+          description: A promo code to apply to a membership plan
           required: false
           schema:
             type: string
@@ -107,16 +111,13 @@ components:
         description:
           type: string
         annualMembershipPrice:
-          allOf: 
-            - $ref: '#/components/schemas/Price'
+          $ref: '#/components/schemas/Price'
         monthlyMembershipPrice:
-          allOf:
-            - $ref: '#/components/schemas/Price'
+          $ref: '#/components/schemas/Price'
         promoCode:
           type: string
         totalCost:
-          allOf:
-            - $ref: '#/components/schemas/Price'
+          $ref: '#/components/schemas/Price'
     Price:
       required:
         - amount
