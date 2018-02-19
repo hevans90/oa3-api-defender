@@ -146,26 +146,6 @@ paths:
                   token:
                     type: string
               
-  /restaurants:
-    get:
-      tags:
-        - restaurants
-      description: Returns all restaurants
-      summary: Find Restaurants
-      responses:
-        '200':
-          description: A list of restaurants.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Restaurant'
-  /restaurants/{id}:
-    get:
-      tags:
-        - restaurants
-      description: Returns restaurants based on ID
   /search:
     get:
       tags:
@@ -190,6 +170,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedResponse'
+
+  /restaurants:
+    get:
+      tags:
+        - restaurants
+      description: Returns all restaurants
+      summary: Find Restaurants
+      responses:
+        '200':
+          description: A list of restaurants.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+  /restaurants/{id}:
+    get:
+      tags:
+        - restaurants
+      description: Returns restaurants based on ID
       summary: Find restaurants by ID
       parameters:
         - in: path
