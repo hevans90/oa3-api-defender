@@ -1,5 +1,4 @@
 openapi: 3.0.0
-harri sucks
 # Added by API Auto Mocking Plugin
 servers:
   - description: SwaggerHub API Auto Mocking
