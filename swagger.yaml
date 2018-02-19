@@ -58,6 +58,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MembershipPlan'
+  /user:
+    get:
+      description: Fetch the currently authenticated user
+      tags:
+        - user
+      responses:
+        '200':
+          description: Currently authenticated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    
+    post:
+      description: Create a new user
+      tags:
+        - user
+      requestBody:
+        description: Details required to create a new user
+        content:
+          application/json:
+            schema:
+              required:
+                - username
+                - password
+                - member
+              properties:
+                username:
+                  type: string
+                  example: 'user@email.com'
+                password:
+                  type: string
+                  example: 'SuperSweetStrongPassword123!'
+                member: 
+                  $ref: '#/components/schemas/Member'
+                membershipPlan:
+                  $ref: '#/components/schemas/MembershipPlan' 
+      responses:
+        '200':
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
   /restaurants:
     get:
       tags:
@@ -289,14 +333,17 @@ components:
           format: int64
         name:
           type: string
+          example: 'Classic'
         description:
           type: string
+          example: Our most popular option
         annualMembershipPrice:
           $ref: '#/components/schemas/Price'
         monthlyMembershipPrice:
           $ref: '#/components/schemas/Price'
         promoCode:
           type: string
+          example: EARLYBIRD
         totalCost:
           $ref: '#/components/schemas/Price'
     Price:
@@ -306,8 +353,79 @@ components:
       properties:
         amount:
           type: number
+          example: 5.35
         currencyCode:
           type: string
+          example: "GBP"
+    User:
+      required:
+        - id
+        - email
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          example: user@email.com
+    Member:
+      required:
+        - id
+        - title
+        - firstName
+        - lastName
+        - emailAddress
+        - address
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          enum: [Mr., Mrs., Ms., Miss]
+        firstName:
+          type: string
+          example: 'Gemima'
+        lastName:
+          type: string
+          example: 'Puddleduck'
+        emailAddress:
+          type: string  
+          example: 'gemimapuddleduck@email.com'
+        address:
+          $ref: '#/components/schemas/Address'
+    Address:
+      required:
+        - addressType
+        - houseNumber
+        - street1
+        - street2
+        - city
+        - state
+        - country
+        - postcode
+      properties:
+        addressType:
+          type: string
+          example: 'home'
+        houseNumber:
+          type: integer
+        street1:
+          type: string
+          example: Atlantic Heights
+        street2:
+          type: string
+          example: Barnacle Square
+        city:
+          type: string
+          example: London
+        state:
+          type: string
+          example: London
+        country:
+          type: string
+          example: UK
+        postcode:
+          type: string
+          example: BA12GZ
     Restaurant:
       allOf:
        - $ref: '#/components/schemas/EntityDetails'
