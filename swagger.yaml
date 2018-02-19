@@ -114,15 +114,14 @@ paths:
           application/json:
             schema:
               required:
-                - username
+                - userName
                 - password
               properties:
-                username:
+                userName:
                   type: string
-                  example: user@email.com
                 password:
                   type: string
-                  example: 'StrongPassword23!'
+              
       responses:
         '200':
           description: Authentication token
@@ -400,6 +399,7 @@ components:
         email:
           type: string
           example: user@email.com
+    
     Member:
       required:
         - id
