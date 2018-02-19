@@ -18,10 +18,10 @@ paths:
       tags:
         - plans
       description: Returns an array of all membership plans
-      responses: 
+      responses:
         '200':
           description: A JSON array of membership plans
-          content: 
+          content:
             application/json:
               schema:
                 type: array
@@ -70,7 +70,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-    
     post:
       description: Create a new user
       tags:
@@ -91,10 +90,10 @@ paths:
                 password:
                   type: string
                   example: 'SuperSweetStrongPassword123!'
-                member: 
+                member:
                   $ref: '#/components/schemas/Member'
                 membershipPlan:
-                  $ref: '#/components/schemas/MembershipPlan' 
+                  $ref: '#/components/schemas/MembershipPlan'
       responses:
         '200':
           description: Created user
@@ -102,7 +101,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-  
+
   /user/authenticate:
     post:
       description: Authenticate a user
@@ -113,8 +112,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthenticationPayload'
-              
+              $ref: '#/components/schemas/UserAuthenticationPayload'
       responses:
         '200':
           description: Authentication token
@@ -126,7 +124,20 @@ paths:
                 properties:
                   token:
                     type: string
-              
+
+  /user/activate:
+    post:
+      description: Activate a user
+      tags:
+        - user
+      requestBody:
+        description: User activation payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserActivationPayload
+
+
   /restaurants:
     get:
       tags:
@@ -392,8 +403,8 @@ components:
         email:
           type: string
           example: user@email.com
-    
-    AuthenticationPayload:
+
+    UserAuthenticationPayload:
       required:
         - userName
         - password
@@ -402,7 +413,17 @@ components:
           type: string
         password:
           type: string
-    
+
+    UserActivationPayload:
+      required:
+        - activationToken
+        - password
+      properties:
+        activationToken:
+          type: string
+        password:
+          type: string
+
     Member:
       required:
         - id
@@ -424,7 +445,7 @@ components:
           type: string
           example: 'Puddleduck'
         emailAddress:
-          type: string  
+          type: string
           example: 'gemimapuddleduck@email.com'
         address:
           $ref: '#/components/schemas/Address'
@@ -522,7 +543,7 @@ components:
         - name
         - id
       properties:
-        id: 
+        id:
           type: integer
           description: entity ID
           example: 0
