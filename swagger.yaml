@@ -1,4 +1,5 @@
 openapi: 3.0.0
+harri sucks
 # Added by API Auto Mocking Plugin
 servers:
   - description: SwaggerHub API Auto Mocking
@@ -18,7 +19,7 @@ tags:
   - name: developers
     description: Operations available to regular developers
 paths:
-  /inventory:
+  /inventories2:
     get:
       tags:
         - developers
