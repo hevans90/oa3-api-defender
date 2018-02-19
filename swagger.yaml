@@ -18,10 +18,8 @@ tags:
   - name: developers
     description: Operations available to regular developers
 paths:
-  /inventories2:
+  /inventories:
     get:
-      tags:
-        - developers
       summary: searches inventory
       operationId: searchInventory
       description: |
@@ -61,8 +59,6 @@ paths:
         '400':
           description: bad input parameter
     post:
-      tags:
-        - admins
       summary: adds an inventory item
       operationId: addInventory
       description: Adds an item to the system
