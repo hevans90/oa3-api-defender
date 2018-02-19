@@ -146,6 +146,26 @@ paths:
                   token:
                     type: string
               
+  /user/activate:
+    post:
+      description: Activate a user
+      tags:
+        - user
+      requestBody:
+        description: User activation payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserActivationPayload'
+      responses:
+        '200':
+          description: The activated user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
   /search:
     get:
       tags:
@@ -437,12 +457,21 @@ components:
           type: string
           example: user@email.com
     
-    AuthenticationPayload:
+    UserAuthenticationPayload:
       required:
         - userName
         - password
       properties:
         userName:
+          type: string
+        password:
+          type: string
+    UserActivationPayload:
+      required:
+        - activationToken
+        - password
+      properties:
+        activationToken:
           type: string
         password:
           type: string
