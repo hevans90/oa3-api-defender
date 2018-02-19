@@ -135,7 +135,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserActivationPayload
+              $ref: '#/components/schemas/UserActivationPayload'
+      responses:
+        '200':
+          description: The activated user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
 
 
   /restaurants:
