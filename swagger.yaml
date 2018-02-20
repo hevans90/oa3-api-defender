@@ -320,7 +320,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Occasion'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Occasion'
                   
   /member/occasions{id}:
     put:
@@ -466,6 +468,90 @@ paths:
                 properties:
                   deleted:
                     type: boolean
+  /member/preferences:
+    get:
+      summary: Fetch the current member's preferences
+      description: Fetch the current member's preferences
+      tags:
+       - member
+      responses:
+        '200':
+          description: Current member's preferences
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Preference'
+                  
+    post:
+      summary: Add a preference to the currently selected member
+      description: Add a preference to the currently selected member
+      tags:
+       - member
+      requestBody:
+        description: preference
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preference'
+      responses:
+        '200':
+          description: Successfully added preference
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Preference'
+  /member/preferences/{id}:
+    delete:
+      summary: Delete a member preference
+      description: Delete a member preference
+      tags:
+       - member
+      parameters:
+        - name: id
+          required: true
+          schema:
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+          in: path
+      responses:
+        '200':
+          description: Whether the preferece was successfully deleted or not
+          content:
+            application/json:
+              schema:
+                required:
+                  - deleted
+                properties:
+                  deleted:
+                    type: boolean
+  /search-preferences:
+    get:
+      summary: Search for preferences
+      description: Search for preferences
+      tags:
+        - member
+      
+      responses:
+        '200':
+          description: A list of returned preferences
+          content:
+            application/json:
+              schema:
+                allOf:
+                 - $ref: '#/components/schemas/PaginatedResponse'
+                 - type: object
+                   properties:
+                     results:
+                       type: array
+                       items:
+                         $ref: '#/components/schemas/Preference'
   /user:
     get:
       summary: Currently authenticated user
@@ -1157,6 +1243,13 @@ components:
           type: string
           description: 'Absolute URL for the image'
           example: 'https://imgur.com/gallery/u1SZp'
+    Preference:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
     PaginatedResponse:
       type: object
       description: 'A generic paginated response'
