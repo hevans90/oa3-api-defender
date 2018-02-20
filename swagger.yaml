@@ -15,6 +15,8 @@ info:
 tags:
   - name: plans
     description: Member Plans
+- name: member
+    description: Member functionality
   - name: restaurants
     description: Restaurant entities
   - name: celebrityChefs
@@ -77,6 +79,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MembershipPlan'
+  /member:
+    get:
+      description: Fetch the current member profile
+      tags:
+        - member
+      responses:
+        '200':
+          description: asd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
   /user:
     get:
       summary: Currently authenticated user
