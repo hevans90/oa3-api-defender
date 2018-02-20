@@ -15,7 +15,7 @@ info:
 tags:
   - name: plans
     description: Member Plans
-- name: member
+  - name: member
     description: Member functionality
   - name: restaurants
     description: Restaurant entities
