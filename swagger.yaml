@@ -196,8 +196,10 @@ paths:
             application/json:
               schema:
                   type: boolean
+                  
   /member/travellers:
     get:
+      summary: Fetch the current member's travellers
       description: Fetch the travellers associated with current member profile
       tags:
         - member
@@ -211,20 +213,19 @@ paths:
                 items:
                   $ref: '#/components/schemas/Traveller'
     post:
-      description: Replace travellers associated with a member with a new collection of travellers
+      summary: Add a new traveller to the currently selected member
+      description: Add a new traveller to the currently selected member
       tags:
        - member
       requestBody:
-        description: JSON array of travellers
+        description: traveller
         content:
           application/json:
             schema:
-              type: array
-              items: 
-                $ref: '#/components/schemas/Traveller'
+              $ref: '#/components/schemas/Traveller'
       responses:
         '200':
-          description: Successfully updated JSON array of travellers associated with member
+          description: Successfully added traveller
           content:
             application/json:
               schema:
@@ -233,6 +234,7 @@ paths:
                   $ref: '#/components/schemas/Traveller'
   /member/travellers{id}:
     put:
+      summary: Edit a current member's traveller
       description: Update an individual traveller associated with a member
       tags:
        - member
@@ -260,6 +262,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Traveller'
     delete:
+      summary: Delete a member traveller
       description: Delete an individual traveller associated with a member
       tags:
        - member
@@ -284,6 +287,99 @@ paths:
                 properties:
                   deleted:
                     type: boolean
+                    
+  /member/occasions:
+    get:
+      summary: Fetch the current member's occasions
+      description: Fetch the occasions associated with current member
+      tags:
+        - member
+      responses:
+        '200':
+          description: JSON array of occasions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Occasion'
+    post:
+      summary: Add a new member to the currently selected member
+      description: Add a new member to the currently selected member
+      tags:
+       - member
+      requestBody:
+        description: occasion
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Occasion'
+      responses:
+        '200':
+          description: Successfully updated JSON array of occasions associated with member
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Occasion'
+                  
+  /member/occasions{id}:
+    put:
+      summary: Edit a member occasion
+      description: Update an individual occasion associated with a member
+      tags:
+       - member
+      parameters:
+        - name: id
+          required: true
+          schema:
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+          in: path
+      requestBody:
+        description: occasion
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Occasion'
+      responses:
+        '200':
+          description: Successfully updated occasion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Occasion'
+    delete:
+      summary: Delete a member occasion
+      description: Delete an individual occasion associated with a member
+      tags:
+       - member
+      parameters:
+        - name: id
+          required: true
+          schema:
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+          in: path
+      responses:
+        '200':
+          description: Whether the occasion was successfully deleted or not
+          content:
+            application/json:
+              schema:
+                required:
+                  - deleted
+                properties:
+                  deleted:
+                    type: boolean
+                    
   /user:
     get:
       summary: Currently authenticated user
@@ -867,6 +963,17 @@ components:
           type: integer
         name: 
           type: string
+          example: Joe Blogs
+    Occasion:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name: 
+          type: string
+          example: Birthday
     Restaurant:
       allOf:
        - $ref: '#/components/schemas/EntityDetails'
