@@ -79,6 +79,7 @@ paths:
                 $ref: '#/components/schemas/MembershipPlan'
   /user:
     get:
+      summary: Currently authenticated user
       description: Fetch the currently authenticated user
       tags:
         - user
@@ -91,6 +92,7 @@ paths:
                 $ref: '#/components/schemas/User'
     
     post:
+      summary: Create user
       description: Create a new user
       tags:
         - user
@@ -124,6 +126,7 @@ paths:
   
   /user/authenticate:
     post:
+      summary: Authenticate user
       description: Authenticate a user
       tags:
         - user
@@ -148,6 +151,7 @@ paths:
               
   /user/activate:
     post:
+      summary: Activate user
       description: Activate a user
       tags:
         - user
@@ -166,6 +170,118 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+  /user/changeEmail:
+    post:
+      summary: Change email
+      description: Change the currently authenticated user's email
+      tags:
+        - user
+      requestBody:
+        description: New email address
+        content:
+          application/json:
+            schema:
+              required:
+                - emailAddress
+              properties:
+                emailAddress:
+                  type: string
+                  example: newEmail@email.com
+      responses:
+        '200':
+          description: Whether the user is activated successfully or not
+          content:
+            application/json:
+              schema:
+                required:
+                  - activated
+                properties:
+                  activated:
+                    type: boolean
+  /user/changePassword:
+    post:
+      summary: Change password
+      description: Change the currently authenticated user's password
+      tags:
+        - user
+      requestBody:
+        description: Old and new password
+        content:
+          application/json:
+            schema:
+              required:
+                - oldPassword
+                - newPassword
+              properties:
+                oldPassword:
+                  type: string
+                  example: lameOldPassword123!
+                newPassword:
+                  type: string
+                  example: newSwankyPassword123!
+      responses:
+        '200':
+          description: Whether the user's password is changed successfully or not
+          content:
+            application/json:
+              schema:
+                required:
+                  - changed
+                properties:
+                  changed:
+                    type: boolean
+  /user/requestPasswordReset:
+    post:
+      summary: Request to reset password
+      description: Request a link to reset currently authenticated user's password
+      tags:
+        - user
+      requestBody:
+        description: Email address
+        content:
+          application/json:
+            schema:
+              required:
+                - emailAddress
+              properties:
+                emailAddress:
+                  type: string
+                  example: forgetfulfred@email.com
+      responses:
+        '200':
+          description: Empty response to avoid exposing members' email addresses
+  /user/resetPassword:
+    post:
+      summary: Reset password
+      description: Reset password via a reset password token
+      tags:
+        - user
+      requestBody:
+        description: New password and reset password token
+        content:
+          application/json:
+            schema:
+              required:
+                - token
+                - newPassword
+              properties:
+                token:
+                  type: string
+                  example: '97-4rr-53ac091b31ab98ab9261'
+                newPassword:
+                  type: string
+                  example: 'SwishNewPassword123!'
+      responses:
+        '200':
+          description: Whether password was changed successfully or not
+          content:
+            application/json:
+              schema:
+                required:
+                  - changed
+                properties:
+                  changed:
+                    type: boolean
   /search:
     get:
       tags:
