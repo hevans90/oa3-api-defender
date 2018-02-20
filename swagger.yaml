@@ -81,6 +81,7 @@ paths:
                 $ref: '#/components/schemas/MembershipPlan'
   /member:
     get:
+      summary: Fetch the current member profile
       description: Fetch the current member profile
       tags:
         - member
@@ -91,9 +92,113 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Member'
+  /member/eligibility:
+    get:
+      summary: Send a member eligibility query with criteria
+      tags:
+        - member
+      parameters:
+        - in: query
+          name: cardNumber
+          schema:
+            type: integer
+          required: true
+        - in: query
+          name: client
+          schema:
+            type: string
+            enum: [MasterCard, Visa]
+          required: true
+      responses:
+        '200':
+          description: Eligibility response
+          content:
+            application/json:
+              schema:
+                required:
+                  - isEligible
+                properties:
+                  isEligible:
+                    type: boolean
+                  reason: 
+                    type: string
+  /member/addresses:
+    get:
+      summary: Fetch the current member's addresses
+      tags:
+        - member
+      responses:
+        '200':
+          description: A list of the current member's addresses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+    post:
+      summary: Add a new address to the currently selected member
+      tags:
+        - member
+      requestBody:
+        description: The address to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '200':
+          description: The successfully added address entity
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Address'
+  /member/addresses/{id}:
+    put:
+      summary: Edit a current member's address
+      tags:
+        - member
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: The updated address
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '200':
+          description: The successfully updated address entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Address'
+    delete:
+      summary: Delete a current member's address
+      tags:
+        - member
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Address deletion response
+          content:
+            application/json:
+              schema:
+                  type: boolean
   /user:
     get:
-      summary: Currently authenticated user
+      summary: Fetch the currently authenticated user
       description: Fetch the currently authenticated user
       tags:
         - user
