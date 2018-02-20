@@ -92,6 +92,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Member'
+
   /member/eligibility:
     get:
       summary: Send a member eligibility query with criteria
@@ -468,6 +469,82 @@ paths:
                 properties:
                   deleted:
                     type: boolean
+                    
+  /member/cards:
+    get:
+      description: Fetch the current member's payment cards
+      summary: Fetch the current member's payment cards
+      tags:
+        - member
+      responses:
+        '200':
+          description: Current member's payment cards
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObfuscatedPaymentCard'
+  /member/cards/{id}:
+    patch:
+      description: Update a current member's payment card
+      summary: Update a current member's payment card
+      tags:
+        - member
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+      requestBody:
+        description: Updates the current payment card
+        content:
+          application/json:
+            schema:
+              properties:
+                cardHolderName:
+                  type: string
+      responses:
+        '200':
+          description: Successfully updated payment card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObfuscatedPaymentCard'
+    delete:
+      description: Delete a current member's payment card
+      summary: Delete a current member's payment card
+      tags:
+        - member
+      parameters:
+        - in: path
+          required: true
+          name: id
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully deleted payment card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObfuscatedPaymentCard'
+                
+  /member/activities:
+    get:
+      description: Fetch the current member's activities
+      summary: Fetch the current member's activities
+      tags:
+       - member
+      responses:
+        '200':
+          description: Current member's activities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'                    
+                  
   /member/preferences:
     get:
       summary: Fetch the current member's preferences
@@ -1249,6 +1326,32 @@ components:
         id:
           type: integer
         name:
+          type: string
+    Activity:
+      type: object
+      properties:
+        id:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+          example: 'YYYY-MM-DDTHH:mm:ss.sssZ'
+        type:
+          type: string
+          enum: [FlightBookingTPActivity, HotelBookingTPActivity, CarHireBookingTPActivity, TravelBriefingTMActivity]
+        iconClass:
+          type: string
+        booking:
+          type: object
+    ObfuscatedPaymentCard:
+      type: object
+      properties:
+        cardNumber:
+          type: string
+          example: '************7777'
+          minLength: 16
+          maxLength: 16
+        cardHolderName:
           type: string
     PaginatedResponse:
       type: object
