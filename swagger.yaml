@@ -33,6 +33,9 @@ tags:
     description: Search functionality
   - name: user
     description: User functionality
+security:
+  - jwtTokenAuth: []
+    
 paths:
   /plans:
     get:
@@ -1076,6 +1079,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/Benefit'
 components:
+  securitySchemes:
+    jwtTokenAuth:
+      type: apiKey
+      in: header
+      name: jwtTokenAuth
   schemas:
     MembershipPlan:
       required:
