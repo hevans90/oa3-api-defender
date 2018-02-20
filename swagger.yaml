@@ -196,9 +196,97 @@ paths:
             application/json:
               schema:
                   type: boolean
+  /member/travellers:
+    get:
+      description: Fetch the travellers associated with current member profile
+      tags:
+        - member
+      responses:
+        '200':
+          description: JSON array of travellers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Traveller'
+    post:
+      description: Replace travellers associated with a member with a new collection of travellers
+      tags:
+       - member
+      requestBody:
+        description: JSON array of travellers
+        content:
+          application/json:
+            schema:
+              type: array
+              items: 
+                $ref: '#/components/schemas/Traveller'
+      responses:
+        '200':
+          description: Successfully updated JSON array of travellers associated with member
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Traveller'
+  /member/travellers{id}:
+    put:
+      description: Update an individual traveller associated with a member
+      tags:
+       - member
+      parameters:
+        - name: id
+          required: true
+          schema:
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+          in: path
+      requestBody:
+        description: traveller
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Traveller'
+      responses:
+        '200':
+          description: Successfully updated traveller
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Traveller'
+    delete:
+      description: Delete an individual traveller associated with a member
+      tags:
+       - member
+      parameters:
+        - name: id
+          required: true
+          schema:
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+          in: path
+      responses:
+        '200':
+          description: Whether the traveller was successfully deleted or not
+          content:
+            application/json:
+              schema:
+                required:
+                  - deleted
+                properties:
+                  deleted:
+                    type: boolean
   /user:
     get:
-      summary: Fetch the currently authenticated user
+      summary: Currently authenticated user
       description: Fetch the currently authenticated user
       tags:
         - user
@@ -770,6 +858,15 @@ components:
         postcode:
           type: string
           example: BA12GZ
+    Traveller:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name: 
+          type: string
     Restaurant:
       allOf:
        - $ref: '#/components/schemas/EntityDetails'
