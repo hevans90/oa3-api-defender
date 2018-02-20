@@ -304,7 +304,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Occasion'
     post:
-      summary: Add a new o ccasion to the currently selected member
+      summary: Add a new occasion to the currently selected member
       description: Add a new occasion to the currently selected member
       tags:
        - member
@@ -378,6 +378,94 @@ paths:
                   deleted:
                     type: boolean
                     
+  /member/phoneNumbers:
+    get:
+      summary: Fetch the current member's phone numbers
+      description: Fetch the phone numbers associated with current member
+      tags:
+        - member
+      responses:
+        '200':
+          description: JSON array of phone numbers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PhoneNumber'
+    post:
+      summary: Add a new phone number to the currently selected member
+      description: Add a new phone number to the currently selected member
+      tags:
+       - member
+      requestBody:
+        description: phone number
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+      responses:
+        '200':
+          description: Successfully added phone number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+  /member/phoneNumbers{id}:
+    put:
+      summary: Edit a member phone number
+      description: Update an individual phone number associated with a member
+      tags:
+       - member
+      parameters:
+        - name: id
+          required: true
+          schema:
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+          in: path
+      requestBody:
+        description: phone number
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+      responses:
+        '200':
+          description: Successfully updated phone number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+    delete:
+      summary: Delete a member phone number
+      description: Delete an individual phone number associated with a member
+      tags:
+       - member
+      parameters:
+        - name: id
+          required: true
+          schema:
+            required:
+              - id
+            properties:
+              id:
+                type: integer
+          in: path
+      responses:
+        '200':
+          description: Whether the phone number was successfully deleted or not
+          content:
+            application/json:
+              schema:
+                required:
+                  - deleted
+                properties:
+                  deleted:
+                    type: boolean
   /user:
     get:
       summary: Currently authenticated user
@@ -962,6 +1050,20 @@ components:
         name: 
           type: string
           example: Joe Blogs
+    PhoneNumber:
+      required:
+        - id
+        - number
+        - countryCallingCode
+      properties:
+        id:
+          type: integer
+        number: 
+          type: string
+          example: 07700900975
+        countryCallingCode:
+          type: string
+          example: 'UK'
     Occasion:
       required:
         - id
