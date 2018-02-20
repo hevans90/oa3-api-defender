@@ -52,7 +52,7 @@ paths:
     get:
       tags:
         - plans
-      description: Returns a single membership plan, by id
+      description: Returns a single membership plan
       parameters:
         - name: id
           in: path
@@ -304,8 +304,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Occasion'
     post:
-      summary: Add a new member to the currently selected member
-      description: Add a new member to the currently selected member
+      summary: Add a new o ccasion to the currently selected member
+      description: Add a new occasion to the currently selected member
       tags:
        - member
       requestBody:
@@ -316,13 +316,11 @@ paths:
               $ref: '#/components/schemas/Occasion'
       responses:
         '200':
-          description: Successfully updated JSON array of occasions associated with member
+          description: Successfully added occasion
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Occasion'
+                $ref: '#/components/schemas/Occasion'
                   
   /member/occasions{id}:
     put:
@@ -475,7 +473,7 @@ paths:
                   $ref: '#/components/schemas/User'
   /user/changeEmail:
     post:
-      summary: Change email
+      summary: Change user email
       description: Change the currently authenticated user's email
       tags:
         - user
@@ -503,7 +501,7 @@ paths:
                     type: boolean
   /user/changePassword:
     post:
-      summary: Change password
+      summary: Change user password
       description: Change the currently authenticated user's password
       tags:
         - user
@@ -535,7 +533,7 @@ paths:
                     type: boolean
   /user/requestPasswordReset:
     post:
-      summary: Request to reset password
+      summary: Request to reset user password
       description: Request a link to reset currently authenticated user's password
       tags:
         - user
@@ -555,8 +553,8 @@ paths:
           description: Empty response to avoid exposing members' email addresses
   /user/resetPassword:
     post:
-      summary: Reset password
-      description: Reset password via a reset password token
+      summary: Reset user password
+      description: Reset a user's password via a reset password token
       tags:
         - user
       requestBody:
