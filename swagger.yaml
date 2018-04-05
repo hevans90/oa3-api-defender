@@ -3,6 +3,8 @@ openapi: 3.0.0
 servers:
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/tengroup/tenplatform-api/1.0.0
+  - description: Local API
+    url: http://localhost:4040
 info:
   description: A spec for the Ten Platform API.
   version: "1.0.0"
