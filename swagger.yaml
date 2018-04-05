@@ -55,7 +55,7 @@ paths:
     get:
       tags:
         - plans
-      description: Returns a single membership plan
+      description: Returns a single membership plan!
       parameters:
         - name: id
           in: path
