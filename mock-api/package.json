@@ -1,0 +1,27 @@
+{
+  "name": "ten-platform-mock-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p src/api && tsc -p spec",
+    "api:dev": "npx nodemon --watch 'src/api/**/*.ts' --ignore 'src/api/**/*.spec.ts' --exec 'ts-node' src/api/server.ts",
+    "api:prod": "tsc -p src/api && node dist/api/server.js",
+    "watch:api": "tsc -p src/api -w",
+    "test": "tsc -p src/api && tsc -p spec && npx nodemon --watch dist ./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=spec/support/jasmine.json"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.8.6",
+    "@types/express": "^4.11.1",
+    "@types/node": "^9.4.6",
+    "jasmine": "^3.1.0",
+    "jasmine-spec-reporter": "^4.2.1",
+    "nodemon": "^1.17.1",
+    "ts-node": "^5.0.1",
+    "typescript": "^2.7.2"
+  }
+}
