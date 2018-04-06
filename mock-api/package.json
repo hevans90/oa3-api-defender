@@ -5,8 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -p src/api && tsc -p spec",
-    "api:dev": "npx nodemon --watch 'src/api/**/*.ts' --ignore 'src/api/**/*.spec.ts' --exec 'ts-node' src/api/server.ts",
-    "api:prod": "tsc -p src/api && node dist/api/server.js",
+    "serve:dev": "npx nodemon --watch 'src/api/**/*.ts' --ignore 'src/api/**/*.spec.ts' --exec 'ts-node' src/api/server.ts",
+    "serve:prod": "tsc -p src/api && node dist/api/server.js",
+    "serve:swagger": "concurrently \"http-server ./swagger-ui -a localhost -p 4041\" \"open http://localhost:4041/\"",
     "watch:api": "tsc -p src/api -w",
     "test": "tsc -p src/api && tsc -p spec && npx nodemon --watch dist ./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=spec/support/jasmine.json"
   },
@@ -15,9 +16,11 @@
     "express": "^4.16.2"
   },
   "devDependencies": {
-    "@types/jasmine": "^2.8.6",
     "@types/express": "^4.11.1",
+    "@types/jasmine": "^2.8.6",
     "@types/node": "^9.4.6",
+    "concurrently": "^3.5.1",
+    "http-server": "^0.11.1",
     "jasmine": "^3.1.0",
     "jasmine-spec-reporter": "^4.2.1",
     "nodemon": "^1.17.1",
