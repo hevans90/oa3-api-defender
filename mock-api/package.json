@@ -8,8 +8,7 @@
     "serve:dev": "npx nodemon --watch 'src/api/**/*.ts' --ignore 'src/api/**/*.spec.ts' --exec 'ts-node' src/api/server.ts",
     "serve:prod": "tsc -p src/api && node dist/api/server.js",
     "serve:swagger": "concurrently \"http-server ./swagger-ui -a localhost -p 4041\" \"open http://localhost:4041/\"",
-    "watch:api": "tsc -p src/api -w",
-    "test": "tsc -p src/api && tsc -p spec && npx nodemon --watch dist ./node_modules/.bin/jasmine JASMINE_CONFIG_PATH=spec/support/jasmine.json"
+    "test": "nodemon --ext ts --exec 'jasmine-ts \"src/api/**/*.spec.ts\"'"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -21,8 +20,8 @@
     "@types/node": "^9.4.6",
     "concurrently": "^3.5.1",
     "http-server": "^0.11.1",
-    "jasmine": "^3.1.0",
     "jasmine-spec-reporter": "^4.2.1",
+    "jasmine-ts": "^0.2.1",
     "nodemon": "^1.17.1",
     "ts-node": "^5.0.1",
     "typescript": "^2.7.2"

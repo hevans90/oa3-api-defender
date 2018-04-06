@@ -71,6 +71,12 @@ class App {
       ]);
     });
 
+    router.get('/test', (req: Request, res: Response) => {
+      res.status(200).send({
+        message: 'Im a teapot'
+      });
+    });
+
     router.post('/', (req: Request, res: Response) => {
       const data = req.body;
       // query a database and save data
