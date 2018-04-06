@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { Request, Response } from 'express';
+import { reqReporter } from './request-reporter';
 
 class App {
   constructor() {
@@ -8,6 +9,11 @@ class App {
     this.config();
     this.headers();
     this.routes();
+    this.app.use(function(err, req, res, next) {
+      console.error(err.stack);
+      res.status(500).send('Something broke!');
+    });
+    this.app.use(reqReporter);
   }
 
   public app: express.Application;
@@ -48,7 +54,7 @@ class App {
     // create a new router
     const router = express.Router();
 
-    router.get('/plans', (req: Request, res: Response) => {
+    router.get('/plans', (req: Request, res: Response, next) => {
       res.status(200).send([
         {
           id: 0,
@@ -69,20 +75,20 @@ class App {
           }
         }
       ]);
+      next();
     });
 
-    router.get('/test', (req: Request, res: Response) => {
-      res.status(200).send({
-        message: 'Im a teapot'
-      });
+    router.get('/test', (req: Request, res: Response, next) => {
+      res.status(400).send('Bad Request');
+      next();
     });
 
-    router.post('/', (req: Request, res: Response) => {
-      const data = req.body;
-      // query a database and save data
-      res.status(200).send(data);
+    router.use('*', (req: Request, res: Response, next) => {
+      if (!res.headersSent) {
+        res.status(404).send("Oops! Can't find that");
+      }
+      next();
     });
-
     this.app.use('/', router);
   }
 }
