@@ -7,7 +7,7 @@
     "build": "tsc -p src/api && tsc -p spec",
     "serve:dev": "npx nodemon --watch 'src/api/**/*.ts' --ignore 'src/api/**/*.spec.ts' --exec 'ts-node' src/api/server.ts",
     "serve:prod": "tsc -p src/api && node dist/api/server.js",
-    "serve:swagger": "concurrently \"http-server ./swagger-ui -a localhost -p 4041\" \"open http://localhost:4041/\"",
+    "serve:swagger": "concurrently \"http-server ../ -a localhost -p 4041\" \"open http://localhost:4041/swagger\"",
     "test": "nodemon --ext ts --exec 'jasmine-ts \"src/api/**/*.spec.ts\"'"
   },
   "dependencies": {
