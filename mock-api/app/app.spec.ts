@@ -1,6 +1,6 @@
 import * as request from 'supertest';
 import { Server } from 'http';
-import { finishTest } from '../../spec/tools/finish-test';
+import { finishTest } from '../spec/tools/finish-test';
 
 import { App } from './app';
 import { serverRunner } from './server-runner';

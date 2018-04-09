@@ -4,9 +4,9 @@
 .vscode
 debug.log
 
-src/**/*.js
-src/**/*.map
-src/**/*.css
+app/**/*.js
+app/**/*.map
+app/**/*.css
 
 # documentation files
 /documentation

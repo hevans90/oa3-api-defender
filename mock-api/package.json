@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p src/api && tsc -p spec",
-    "serve:dev": "npx nodemon --watch 'src/api/**/*.ts' --ignore 'src/api/**/*.spec.ts' --exec 'ts-node' src/api/server.ts",
-    "serve:prod": "tsc -p src/api && node dist/api/server.js",
+    "build": "tsc -p app/api && tsc -p spec",
+    "serve:dev": "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec 'ts-node' app/server.ts",
+    "serve:prod": "tsc -p app/api && node dist/server.js",
     "serve:swagger": "concurrently \"http-server ../ -a localhost -p 4041\" \"open http://localhost:4041/swagger\"",
-    "test": "nodemon --ext ts --exec 'jasmine-ts \"src/api/**/*.spec.ts\"'"
+    "test": "nodemon --ext ts --exec 'jasmine-ts \"app/**/*.spec.ts\"'"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
