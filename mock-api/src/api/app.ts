@@ -3,29 +3,31 @@ import * as bodyParser from 'body-parser';
 import { Request, Response } from 'express';
 import { reqReporter } from './request-reporter';
 
-class App {
-  constructor() {
-    this.app = express();
+export class App {
+  constructor(useReporters?: boolean) {
+    this.express = express();
     this.config();
     this.headers();
     this.routes();
-    this.app.use(function(err, req, res, next) {
+    this.express.use(function(err, req, res, next) {
       console.error(err.stack);
       res.status(500).send('Something broke!');
     });
-    this.app.use(reqReporter);
+    if (useReporters) {
+      this.express.use(reqReporter);
+    }
   }
 
-  public app: express.Application;
+  public express: express.Application;
 
   private config(): void {
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.express.use(bodyParser.json());
+    this.express.use(bodyParser.urlencoded({ extended: false }));
   }
 
   private headers(): void {
     // Add headers
-    this.app.use(function(req, res, next) {
+    this.express.use(function(req, res, next) {
       // Website you wish to allow to connect
       res.setHeader('Access-Control-Allow-Origin', '*');
 
@@ -89,8 +91,6 @@ class App {
       }
       next();
     });
-    this.app.use('/', router);
+    this.express.use('/', router);
   }
 }
-
-export default new App().app;
