@@ -1,7 +1,9 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import { Request, Response } from 'express';
-import { reqReporter } from './request-reporter';
+import { NextFunction, Request, Response } from 'express';
+import { reqReporter } from './middleware/request-reporter';
+import { headers } from './middleware/headers';
+import { PlansRoute } from './routes/plans';
 
 export class App {
   constructor(useReporters?: boolean) {
@@ -9,7 +11,12 @@ export class App {
     this.config();
     this.headers();
     this.routes();
-    this.express.use(function(err, req, res, next) {
+    this.express.use(function(
+      err,
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ) {
       console.error(err.stack);
       res.status(500).send('Something broke!');
     });
@@ -27,65 +34,18 @@ export class App {
 
   private headers(): void {
     // Add headers
-    this.express.use(function(req, res, next) {
-      // Website you wish to allow to connect
-      res.setHeader('Access-Control-Allow-Origin', '*');
-
-      // Request methods you wish to allow
-      res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-      );
-
-      // Request headers you wish to allow
-      res.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-Requested-With,content-type'
-      );
-
-      // Set to true if you need the website to include cookies in the requests sent
-      // to the API (e.g. in case you use sessions)
-      res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-      // Pass to next layer of middleware
-      next();
-    });
+    this.express.use(headers);
   }
 
   private routes(): void {
     // create a new router
     const router = express.Router();
 
-    router.get('/plans', (req: Request, res: Response, next) => {
-      res.status(200).send([
-        {
-          id: 0,
-          name: 'Classic',
-          description: 'Our most popular option',
-          annualMembershipPrice: {
-            amount: 5.35,
-            currencyCode: 'GBP'
-          },
-          monthlyMembershipPrice: {
-            amount: 5.35,
-            currencyCode: 'GBP'
-          },
-          promoCode: 'EARLYBIRD',
-          totalCost: {
-            amount: 5.35,
-            currencyCode: 'GBP'
-          }
-        }
-      ]);
-      next();
-    });
+    // add routes here
+    PlansRoute.create(router);
 
-    router.get('/test', (req: Request, res: Response, next) => {
-      res.status(400).send('Bad Request');
-      next();
-    });
-
-    router.use('*', (req: Request, res: Response, next) => {
+    // 404 catch, hits any un-resolved routes
+    router.use('*', (req: Request, res: Response, next: NextFunction) => {
       if (!res.headersSent) {
         res.status(404).send("Oops! Can't find that");
       }
