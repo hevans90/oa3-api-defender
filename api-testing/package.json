@@ -4,10 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "api-test":
-      "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec ts-node app/program.ts"
+    "api-test": "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec ts-node app/program.ts"
   },
   "devDependencies": {
+    "@types/express": "^4.11.1",
     "@types/jasmine": "^2.8.6",
     "@types/node": "^9.6.2",
     "@types/request": "^2.47.0",
@@ -15,8 +15,13 @@
     "jasmine-spec-reporter": "^4.2.1",
     "jasmine-ts": "^0.2.1",
     "nodemon": "^1.17.3",
-    "request": "^2.85.0",
     "ts-node": "^5.0.1",
     "typescript": "^2.8.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "js-yaml": "^3.11.0",
+    "request": "^2.85.0"
   }
 }
