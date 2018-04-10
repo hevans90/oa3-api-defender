@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "api-test": "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec 'ts-node' app/program.ts"
+    "api-test":
+      "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec ts-node app/program.ts"
   },
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
