@@ -1,0 +1,70 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: Local API
+    url: http://localhost:4040
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/tengroup/tenplatform-api/1.0.0
+info:
+  description: A spec for the Ten Platform API.
+  version: "1.0.0"
+  title: Ten Platform API
+  contact:
+    email: someone@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    
+paths:
+  /plans:
+    get:
+      tags:
+        - plans
+      description: Returns an array of all membership plans
+      responses: 
+        '200':
+          description: A JSON array of membership plans
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - name
+                    - description
+                    - annualMembershipPrice
+                    - monthlyMembershipPrice
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+                      example: 'Classic'
+                    description:
+                      type: string
+                      example: Our most popular option
+                    annualMembershipPrice:
+                      $ref: '#/components/schemas/Price'
+                    monthlyMembershipPrice:
+                      $ref: '#/components/schemas/Price'
+                    promoCode:
+                      type: string
+                      example: EARLYBIRD
+                    totalCost:
+                      $ref: '#/components/schemas/Price'
+components:
+  schemas:
+    Price:
+      required:
+        - amount
+        - currencyCode
+      properties:
+        amount:
+          type: number
+          example: 5.35
+        currencyCode:
+          type: string
+          example: "GBP"

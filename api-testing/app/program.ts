@@ -11,7 +11,7 @@ import {
 const apiUrl = 'http://localhost:4040';
 
 const openApiDocument = jsYaml.safeLoad(
-  fs.readFileSync('../swagger.yaml', 'utf-8')
+  fs.readFileSync('../test.yaml', 'utf-8')
 );
 
 const validator = new OpenApiValidator(openApiDocument);
@@ -27,7 +27,9 @@ const callPlans = () => {
         validateResponse(res);
       } catch (err) {
         let xerr: ValidationError = err;
-        console.log(xerr.message);
+        console.log(`${xerr.message}\n`);
+
+        xerr.data.forEach(err => console.log(err));
       }
     }
   );
