@@ -14,49 +14,51 @@ info:
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-    
+
 paths:
   /plans:
     get:
       tags:
         - plans
       description: Returns an array of all membership plans
-      responses: 
+      responses:
         '200':
           description: A JSON array of membership plans
-          content: 
+          content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - id
-                    - name
-                    - description
-                    - annualMembershipPrice
-                    - monthlyMembershipPrice
-                  properties:
-                    id:
-                      type: integer
-                      format: int64
-                    name:
-                      type: string
-                      example: 'Classic'
-                    description:
-                      type: string
-                      example: Our most popular option
-                    annualMembershipPrice:
-                      $ref: '#/components/schemas/Price'
-                    monthlyMembershipPrice:
-                      $ref: '#/components/schemas/Price'
-                    promoCode:
-                      type: string
-                      example: EARLYBIRD
-                    totalCost:
-                      $ref: '#/components/schemas/Price'
+                  $ref: '#/components/schemas/MembershipPlan'
 components:
   schemas:
+    MembershipPlan:
+      required:
+        - id
+        - name
+        - description
+        - annualMembershipPrice
+        - monthlyMembershipPrice
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          example: 'Classic'
+        description:
+          type: string
+          example: Our most popular option
+        annualMembershipPrice:
+          $ref: '#/components/schemas/Price'
+        monthlyMembershipPrice:
+          $ref: '#/components/schemas/Price'
+        promoCode:
+          type: string
+          example: EARLYBIRD
+        totalCost:
+          $ref: '#/components/schemas/Price'
+      additionalProperties: false
     Price:
       required:
         - amount

@@ -7,16 +7,13 @@ export class PlansRoute extends BaseRoute {
       // res.status(200).send({ prop1: 'I am a string, not an array' });
       res.status(200).send([
         {
-          zid: 0,
-          zname: 'Classic',
+          id: '0',
+          name: 1337,
           zdescription: 'Our most popular option',
-          zannualMembershipPrice: {
-            amount: 5.35,
-            currencyCode: 'GBP'
-          },
-          zmonthlyMembershipPrice: {
-            amount: 5.35,
-            currencyCode: 'GBP'
+          annualMembershipPrice: [4, 5, 5, 5],
+          monthlyMembershipPrice: {
+            amount: 5.35
+            // currencyCode: 'GBP'
           },
           zpromoCode: 'EARLYBIRD',
           ztotalCost: {

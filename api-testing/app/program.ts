@@ -14,7 +14,9 @@ const openApiDocument = jsYaml.safeLoad(
   fs.readFileSync('../test.yaml', 'utf-8')
 );
 
-const validator = new OpenApiValidator(openApiDocument);
+const validator = new OpenApiValidator(openApiDocument, {
+  ajvOptions: { allErrors: true }
+});
 
 const callPlans = () => {
   const validateResponse = validator.validateResponse('get', '/plans');
@@ -29,7 +31,11 @@ const callPlans = () => {
         let xerr: ValidationError = err;
         console.log(`${xerr.message}\n`);
 
-        xerr.data.forEach(err => console.log(err));
+        xerr.data.forEach(err => {
+          console.log(`\n`);
+          console.log(JSON.stringify(err, null, 2));
+          console.log(`${colors.bgRed(err.message)}`);
+        });
       }
     }
   );
