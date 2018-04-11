@@ -1,4 +1,4 @@
-import * as request from 'supertest';
+import * as supertest from 'supertest';
 import { Server } from 'http';
 import { finishTest } from '../spec/tools/finish-test';
 
@@ -19,14 +19,14 @@ describe('App', function() {
   });
 
   it('should respond 404 to unknown routes', done => {
-    request(server)
+    supertest(server)
       .get('/nonsense_route')
       .expect(404, finishTest(done));
   });
 
   describe('/plans', () => {
     it('should respond 200', done => {
-      request(server)
+      supertest(server)
         .get('/plans')
         .expect(200, finishTest(done));
     });
