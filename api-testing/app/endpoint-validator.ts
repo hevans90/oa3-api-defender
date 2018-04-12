@@ -1,3 +1,4 @@
+import * as colors from 'colors';
 import {
   OpenApiValidator,
   ValidationError
@@ -26,9 +27,16 @@ export abstract class EndpointValidator {
         } catch (error) {
           const xerr: ValidationError = error;
 
+          console.log(
+            `${colors.bold.bgMagenta(`/${path}`)} - ${colors.underline.bold.red(
+              `${xerr.data.length} problems found`
+            )}:\n`
+          );
           xerr.data.forEach(errorObj => {
-            console.log(ErrorFormatter.formatError(errorObj));
+            console.log(`  ${ErrorFormatter.formatError(errorObj)}`);
           });
+        } finally {
+          console.log('\n');
         }
       }
     );

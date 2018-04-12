@@ -54,6 +54,6 @@ export class ErrorFormatter {
 
     return `${formatPrefix(prefix)} - ${errorData.message} ${formatSuffix(
       suffix
-    )}\n`;
+    )}`;
   };
 }
