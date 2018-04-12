@@ -27,6 +27,10 @@ export class ErrorFormatter {
       }
       case Keyword.type: {
         prefix = errorData.dataPath;
+        errorData.message = `should be ${
+          (errorData.params as TypeParams).type
+        } (currently ${colors.red.bold(typeof errorData.data)})`;
+
         break;
       }
       case Keyword.required: {
