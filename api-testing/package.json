@@ -5,22 +5,25 @@
   "license": "MIT",
   "scripts": {
     "api-test":
-      "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec ts-node app/program.ts"
+      "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec ts-node app/program.ts",
+    "test":
+      "nodemon --ext ts --exec 'jasmine-ts \"app/**/*.spec.ts\"'"
+  },
+  "dependencies": {
+    "express-openapi-validate": "^0.4.0",
+    "js-yaml": "^3.11.0",
+    "request": "^2.85.0"
   },
   "devDependencies": {
     "@types/express": "^4.11.1",
     "@types/jasmine": "^2.8.6",
     "@types/node": "^9.6.2",
     "@types/request": "^2.47.0",
-    "express-openapi-validate": "^0.4.0",
     "jasmine-spec-reporter": "^4.2.1",
     "jasmine-ts": "^0.2.1",
     "nodemon": "^1.17.3",
     "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
     "typescript": "^2.8.1"
-  },
-  "dependencies": {
-    "js-yaml": "^3.11.0",
-    "request": "^2.85.0"
   }
 }
