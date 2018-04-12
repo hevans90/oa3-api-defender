@@ -1,34 +1,42 @@
 import * as colors from 'colors';
-import { ErrorObject, AdditionalPropertiesParams, RequiredParams } from 'ajv';
+import {
+  ErrorObject,
+  AdditionalPropertiesParams,
+  RequiredParams,
+  TypeParams
+} from 'ajv';
 import { Keyword } from './keyword';
 
 export class ErrorFormatter {
   public static formatError = (errorData: ErrorObject): string => {
     let prefix: string | undefined;
     let suffix: string | undefined;
-    const dataPathArray = errorData.dataPath.split('.');
-    const parentObjDescription = ErrorFormatter.getParentObjDescription(
-      dataPathArray
-    );
+
+    errorData.dataPath = errorData.dataPath
+      .split('.')
+      .filter(String)
+      .join('.');
 
     switch (errorData.keyword) {
       case Keyword.additionalProperties: {
-        prefix = parentObjDescription;
+        prefix = errorData.dataPath;
         suffix = (errorData.params as AdditionalPropertiesParams)
           .additionalProperty;
         errorData.message += ':';
         break;
       }
+      case Keyword.type: {
+        prefix = errorData.dataPath;
+        break;
+      }
       case Keyword.required: {
-        prefix = parentObjDescription;
+        prefix = errorData.dataPath;
         errorData.message = 'should have required property:';
         suffix = (errorData.params as RequiredParams).missingProperty;
         break;
       }
       default: {
-        if (dataPathArray.pop()) {
-          prefix = dataPathArray.pop();
-        }
+        prefix = errorData.dataPath;
       }
     }
 
@@ -44,17 +52,4 @@ export class ErrorFormatter {
       suffix
     )}\n`;
   };
-
-  public static getParentObjDescription(dataPathArr: string[]): string {
-    const len = dataPathArr.length;
-    const parentObject: string | null = len > 1 ? dataPathArr[len - 1] : null;
-
-    if (parentObject && parentObject.includes('body')) {
-      return '{ ResponseBody }';
-    } else if (parentObject) {
-      return `{ ${parentObject} }`;
-    } else {
-      return '<No Parent Object Found>';
-    }
-  }
 }
