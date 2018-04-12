@@ -15,7 +15,8 @@ export abstract class EndpointValidator {
     rootUrl: string
   ) {
     const validateResponse = validator.validateResponse(operation, `/${path}`);
-    const response = request.get(
+
+    request.get(
       `${rootUrl}/${path}`,
       (err: any, res: request.Response, body: string) => {
         res.body = JSON.parse(res.body);
