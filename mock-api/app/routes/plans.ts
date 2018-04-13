@@ -20,6 +20,18 @@ export class PlansRoute extends BaseRoute {
             amount: 5.35,
             currencyCode: 'GBP'
           }
+        },
+        {
+          id: '0',
+          name: 1337,
+          description: 'Our most popular option',
+          annualMembershipPrice: [4, 5, 5, 5],
+          monthlyMembershipPrice: {
+            amount: 5.35
+            // currencyCode: 'GBP'
+          },
+          promoCode: 'EARLYBIRD',
+          totalCost: {}
         }
         // 'string bro'
       ]);
