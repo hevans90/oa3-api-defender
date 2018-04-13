@@ -17,7 +17,12 @@ const openApiDocument = jsYaml.safeLoad(
 const validator = new OpenApiValidator(openApiDocument, {
   ajvOptions: { allErrors: true, verbose: true }
 });
+console.log('\n');
+console.log(colors.bgBlue(colors.bold('                             ')));
+console.log(colors.bgBlue(colors.bold('==== OA3 API Testing CLI ====')));
+console.log(colors.bgBlue(colors.bold('_____________________________')));
+console.log('\n');
 
-console.log(`\n${colors.bgBlue(colors.bold('--API Testing CLI--'))}\n`);
+console.log(colors.bold(`API URL: ${apiUrl}\n`));
 
 EndpointValidator.validate(validator, 'get', 'plans', apiUrl);
