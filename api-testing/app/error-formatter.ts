@@ -7,9 +7,15 @@ import {
 } from 'ajv';
 import { Keyword } from './keyword';
 
+export interface ErrorFormat {
+  message: string;
+  prefix: string;
+  suffix?: string;
+}
+
 export class ErrorFormatter {
-  public static formatError = (errorData: ErrorObject): string => {
-    let prefix: string | undefined;
+  public static formatError = (errorData: ErrorObject): ErrorFormat => {
+    let prefix = '';
     let suffix: string | undefined;
 
     errorData.dataPath = errorData.dataPath
@@ -52,8 +58,14 @@ export class ErrorFormatter {
       return suf ? colors.red.bold(suf) : '';
     }
 
-    return `${formatPrefix(prefix)} - ${errorData.message} ${formatSuffix(
-      suffix
-    )}`;
+    const formattedError: ErrorFormat = {
+      message: `${formatPrefix(prefix)} - ${errorData.message} ${formatSuffix(
+        suffix
+      )}`,
+      prefix: prefix,
+      suffix: suffix
+    };
+
+    return formattedError;
   };
 }
