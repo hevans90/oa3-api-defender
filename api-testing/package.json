@@ -6,17 +6,17 @@
   "scripts": {
     "api-test":
       "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec ts-node app/program.ts",
-    "test":
-      "nodemon --ext ts --exec 'jasmine-ts \"app/**/*.spec.ts\"'"
+    "test": "nodemon --ext ts --exec 'jasmine-ts \"app/**/*.spec.ts\"'"
   },
   "dependencies": {
-    "express-openapi-validate": "^0.4.0",
+    "express-openapi-validate": "^0.4.1",
     "js-yaml": "^3.11.0",
     "request": "^2.85.0"
   },
   "devDependencies": {
     "@types/express": "^4.11.1",
     "@types/jasmine": "^2.8.6",
+    "@types/js-yaml": "^3.11.1",
     "@types/node": "^9.6.2",
     "@types/request": "^2.47.0",
     "jasmine-spec-reporter": "^4.2.1",
