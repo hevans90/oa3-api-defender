@@ -9,7 +9,10 @@ import * as request from 'request';
 import { ErrorFormatter } from './error-formatter';
 
 export class EndPointValidator {
-  public static arrRegex = /body\[\d+\]/i;
+  /**
+   * matches strings such as: body[0], array[1232]
+   */
+  public static arrRegex = /[a-z]+\[\d+\]/i;
   public static integerRegex = /\d+/g;
 
   public static validate(
