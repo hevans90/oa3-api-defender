@@ -1,17 +1,30 @@
 import * as colors from 'colors';
 import { SpecValidator } from './spec-validator';
+import * as commander from 'commander';
 
-const apiUrl = 'http://localhost:4040';
-const openApiSpecPath = '../test.yaml';
+commander.version('1.0.0').description("@ten-group's Open API 3 Defender!");
 
-console.log('\n');
-console.log(colors.bgBlue(colors.bold('                             ')));
-console.log(colors.bgBlue(colors.bold('==== OA3 API Testing CLI ====')));
-console.log(colors.bgBlue(colors.bold('_____________________________')));
-console.log('\n');
+commander
+  .command('validate')
+  .option('--specPath <string>', 'Absolute path to a valid OA3 Specification')
+  .option('--url <string>', 'Fully qualified URL of the API to interrogate')
+  .description('Validate an API versus an OA3 Spec')
+  .action((cmd: { specPath: string; url: string }) => {
+    if (!cmd.specPath) {
+      console.log(
+        colors.red(
+          'No --specPath argument specified, please pass this parameter'
+        )
+      );
+      return;
+    } else if (!cmd.url) {
+      console.log(
+        colors.red('No --url argument specified, please pass this parameter')
+      );
+      return;
+    } else {
+      new SpecValidator(cmd.specPath, cmd.url).validateSpec();
+    }
+  });
 
-console.log(colors.bold(`API URL: ${apiUrl}\n`));
-
-const validator: SpecValidator = new SpecValidator(openApiSpecPath, apiUrl);
-
-validator.validateSpec();
+commander.parse(process.argv);

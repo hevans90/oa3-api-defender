@@ -4,11 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "build": "tsc -p app",
     "api-test":
-      "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec ts-node app/program.ts",
+      "npx nodemon --watch 'app/**/*.ts' --ignore 'app/**/*.spec.ts' --exec ts-node app/program.ts validate --specPath=../test.yaml --url=http://localhost:4040",
     "test": "nodemon --ext ts --exec 'jasmine-ts \"app/**/*.spec.ts\"'"
   },
   "dependencies": {
+    "commander": "^2.15.1",
     "express-openapi-validate": "^0.4.1",
     "js-yaml": "^3.11.0",
     "request": "^2.85.0"
