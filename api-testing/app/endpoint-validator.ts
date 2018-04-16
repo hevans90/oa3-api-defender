@@ -8,7 +8,7 @@ import { Operation } from 'express-openapi-validate/dist/OpenApiDocument';
 import * as request from 'request';
 import { ErrorFormatter } from './error-formatter';
 
-export class EndpointValidator {
+export class EndPointValidator {
   public static arrRegex = /body\[\d+\]/i;
   public static integerRegex = /\d+/g;
 
@@ -29,7 +29,7 @@ export class EndpointValidator {
     );
 
     switch (operation) {
-      // "get" | "put" | "post" | "delete"
+      // "get" | "put" | "post" | "patch" | "delete"
       case 'get': {
         request.get(`${rootUrl}/${path}`, (err: any, res: request.Response) => {
           res.body = JSON.parse(res.body);
