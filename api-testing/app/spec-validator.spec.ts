@@ -1,6 +1,7 @@
 import { SpecValidator } from './spec-validator';
-import * as mock from 'mock-fs';
+import * as mockFs from 'mock-fs';
 import { OpenApiDocument } from 'express-openapi-validate';
+import { PathItemObject } from 'express-openapi-validate/dist/OpenApiDocument';
 
 const fakeApiUrl = 'nice-api-mate';
 const fakeDir = 'FAKE__DIR';
@@ -50,7 +51,7 @@ describe('SpecValidator', () => {
   let specValidator: SpecValidator;
 
   beforeEach(() => {
-    mock({
+    mockFs({
       [fakeDir]: {
         [fakeSpecFileName]: fakeSpec,
         'broken-spec.yaml': 'I r brokens'
@@ -64,7 +65,7 @@ describe('SpecValidator', () => {
   });
 
   afterEach(() => {
-    mock.restore();
+    mockFs.restore();
   });
 
   it('should create', () => {
@@ -87,6 +88,56 @@ describe('SpecValidator', () => {
       expect(
         () => new SpecValidator(`${fakeDir}/broken-spec.yaml`, '')
       ).toThrow();
+    });
+  });
+  describe('getDefinedHttpOperations', () => {
+    let mockPathItemObject: PathItemObject = {
+      get: { responses: '200' },
+      put: { responses: '200' },
+      post: { responses: '200' },
+      delete: { responses: '200' },
+      patch: { responses: '200' }
+    };
+
+    it('should correctly convert a PathItemObject (all verbs) to Operation[]', () => {
+      expect(
+        specValidator.getDefinedHttpOperations(mockPathItemObject)
+      ).toEqual(['get', 'post', 'delete', 'put', 'patch']);
+    });
+
+    it('should correctly convert a PathItemObject (get only) to Operation[]', () => {
+      mockPathItemObject = { get: { responses: '' } };
+      expect(
+        specValidator.getDefinedHttpOperations(mockPathItemObject)
+      ).toEqual(['get']);
+    });
+
+    it('should correctly convert a PathItemObject (post only) to Operation[]', () => {
+      mockPathItemObject = { post: { responses: '' } };
+      expect(
+        specValidator.getDefinedHttpOperations(mockPathItemObject)
+      ).toEqual(['post']);
+    });
+
+    it('should correctly convert a PathItemObject (delete only) to Operation[]', () => {
+      mockPathItemObject = { delete: { responses: '' } };
+      expect(
+        specValidator.getDefinedHttpOperations(mockPathItemObject)
+      ).toEqual(['delete']);
+    });
+
+    it('should correctly convert a PathItemObject (put only) to Operation[]', () => {
+      mockPathItemObject = { put: { responses: '' } };
+      expect(
+        specValidator.getDefinedHttpOperations(mockPathItemObject)
+      ).toEqual(['put']);
+    });
+
+    it('should correctly convert a PathItemObject (patch only) to Operation[]', () => {
+      mockPathItemObject = { patch: { responses: '' } };
+      expect(
+        specValidator.getDefinedHttpOperations(mockPathItemObject)
+      ).toEqual(['patch']);
     });
   });
 });

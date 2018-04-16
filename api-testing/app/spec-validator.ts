@@ -66,7 +66,7 @@ export class SpecValidator {
    * Returns an array of Operations from a PathItemObject.
    * (currently only supports **get** | **post** | **delete** | **put** | **patch**)
    */
-  private getDefinedHttpOperations(pathItem: PathItemObject): Operation[] {
+  public getDefinedHttpOperations(pathItem: PathItemObject): Operation[] {
     const operations: Operation[] = [];
 
     if (pathItem.get) operations.push('get');
