@@ -1,11 +1,19 @@
+#!/usr/bin/env node
+
 import * as colors from 'colors';
 import { SpecValidator } from './spec-validator';
 import * as commander from 'commander';
 
+console.log('\n');
+console.log(colors.bgBlue(colors.red('         @ten-group          ')));
+console.log(colors.bgBlue(colors.bold('====  OA3 API Defender   ====')));
+console.log(colors.bgBlue(colors.bold('_____________________________')));
+console.log('\n');
+
 const getVersion = (): string => {
   return require('../package.json').version
     ? require('../package.json').version
-    : 'nice';
+    : 'No version found!';
 };
 
 const version = getVersion();
