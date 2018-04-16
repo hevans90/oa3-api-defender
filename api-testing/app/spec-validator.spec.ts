@@ -2,6 +2,7 @@ import { SpecValidator } from './spec-validator';
 import * as mockFs from 'mock-fs';
 import { OpenApiDocument } from 'express-openapi-validate';
 import { PathItemObject } from 'express-openapi-validate/dist/OpenApiDocument';
+import { EndPointValidator } from './endpoint-validator';
 
 const fakeApiUrl = 'nice-api-mate';
 const fakeDir = 'FAKE__DIR';
@@ -60,7 +61,12 @@ describe('SpecValidator', () => {
 
     specValidator = new SpecValidator(
       `${fakeDir}/${fakeSpecFileName}`,
-      fakeApiUrl
+      fakeApiUrl,
+      {
+        validate: (): void => {
+          '';
+        }
+      }
     );
   });
 
@@ -138,6 +144,21 @@ describe('SpecValidator', () => {
       expect(
         specValidator.getDefinedHttpOperations(mockPathItemObject)
       ).toEqual(['patch']);
+    });
+  });
+
+  describe('validateSpec', () => {
+    let validateSpy;
+    it('should call EndpointValidator with correct params', () => {
+      validateSpy = spyOn(specValidator.endPointValidator, 'validate');
+      specValidator.validateSpec();
+      expect(validateSpy).toHaveBeenCalled();
+      expect(validateSpy).toHaveBeenCalledWith(
+        specValidator.oa3Validator,
+        'get',
+        'potatoes',
+        fakeApiUrl
+      );
     });
   });
 });

@@ -6,7 +6,7 @@ import {
   PathItemObject
 } from 'express-openapi-validate/dist/OpenApiDocument';
 
-import { EndpointValidator } from './endpoint-validator';
+import { EndPointValidator } from './endpoint-validator';
 
 /**
  * A class encapsulating the boilerplate required to call the EndpointValidator.
@@ -15,21 +15,38 @@ import { EndpointValidator } from './endpoint-validator';
  * and the root URL of the API to test against, and then call the validate() method.
  */
 export class SpecValidator {
-  constructor(specPath: string, apiUrl: string) {
+  constructor(
+    specPath: string,
+    apiUrl: string,
+    endPointValidator?: EndPointValidator // simple DI
+  ) {
     this.specPath = specPath;
     this.apiUrl = apiUrl;
 
-    this.document = this.loadOpenApiSpec();
-    this.validator = new OpenApiValidator(this.document, {
+    if (endPointValidator) {
+      this.endPointValidator = endPointValidator;
+    }
+
+    this._document = this.loadOpenApiSpec();
+    this._oa3Validator = new OpenApiValidator(this.document, {
       ajvOptions: { allErrors: true, verbose: true }
     });
   }
 
+  public endPointValidator: any | undefined;
+
   private specPath: string;
   private apiUrl: string;
 
-  private document: OpenApiDocument;
-  private validator: OpenApiValidator;
+  private _document: OpenApiDocument;
+  get document(): OpenApiDocument {
+    return this._document;
+  }
+
+  private _oa3Validator: OpenApiValidator;
+  get oa3Validator(): OpenApiValidator {
+    return this._oa3Validator;
+  }
 
   /**
    * Parses an OA3 spec using jsYaml & fs
@@ -56,7 +73,23 @@ export class SpecValidator {
 
         operations.forEach(op => {
           path = path.replace('/', '');
-          EndpointValidator.validate(this.validator, op, path, this.apiUrl);
+
+          // very rudimentary DI
+          if (this.endPointValidator) {
+            this.endPointValidator.validate(
+              this._oa3Validator,
+              op,
+              path,
+              this.apiUrl
+            );
+          } else {
+            EndPointValidator.validate(
+              this._oa3Validator,
+              op,
+              path,
+              this.apiUrl
+            );
+          }
         });
       });
     }
