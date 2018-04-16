@@ -35,8 +35,7 @@ export class EndPointValidator {
       // "get" | "put" | "post" | "patch" | "delete"
       case 'get': {
         request.get(`${rootUrl}/${path}`, (err: any, res: request.Response) => {
-          res.body = JSON.parse(res.body);
-          this.runValidator(res, operation, path, validateFn);
+          this.verifyRequest(err, res, operation, path, validateFn);
         });
         break;
       }
@@ -44,8 +43,7 @@ export class EndPointValidator {
         request.post(
           { url: `${rootUrl}/${path}`, body: body ? body : null },
           (err: any, res: request.Response) => {
-            res.body = JSON.parse(res.body);
-            this.runValidator(res, operation, path, validateFn);
+            this.verifyRequest(err, res, operation, path, validateFn);
           }
         );
         break;
@@ -54,8 +52,7 @@ export class EndPointValidator {
         request.delete(
           `${rootUrl}/${path}`,
           (err: any, res: request.Response) => {
-            res.body = JSON.parse(res.body);
-            this.runValidator(res, operation, path, validateFn);
+            this.verifyRequest(err, res, operation, path, validateFn);
           }
         );
         break;
@@ -64,8 +61,7 @@ export class EndPointValidator {
         request.put(
           { url: `${rootUrl}/${path}`, body: body ? body : null },
           (err: any, res: request.Response) => {
-            res.body = JSON.parse(res.body);
-            this.runValidator(res, operation, path, validateFn);
+            this.verifyRequest(err, res, operation, path, validateFn);
           }
         );
         break;
@@ -74,8 +70,7 @@ export class EndPointValidator {
         request.patch(
           { url: `${rootUrl}/${path}`, body: body ? body : null },
           (err: any, res: request.Response) => {
-            res.body = JSON.parse(res.body);
-            this.runValidator(res, operation, path, validateFn);
+            this.verifyRequest(err, res, operation, path, validateFn);
           }
         );
         break;
@@ -85,6 +80,21 @@ export class EndPointValidator {
           'this tool currently only supports "get" | "post" | "delete" | "put" | "patch" HTTP operations, sorry!'
         );
       }
+    }
+  }
+
+  private static verifyRequest(
+    err: any,
+    res: request.Response,
+    operation: Operation,
+    path: string,
+    validateFn: any
+  ) {
+    if (err) {
+      console.log(`${colors.red(err)}`);
+    } else {
+      res.body = JSON.parse(res.body);
+      this.runValidator(res, operation, path, validateFn);
     }
   }
 

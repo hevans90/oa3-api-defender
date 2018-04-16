@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as jsYaml from 'js-yaml';
+import * as colors from 'colors';
 import { OpenApiValidator, OpenApiDocument } from 'express-openapi-validate';
 import {
   Operation,
@@ -51,10 +52,25 @@ export class SpecValidator {
   /**
    * Parses an OA3 spec using jsYaml & fs
    */
-  public loadOpenApiSpec(): OpenApiDocument {
-    return jsYaml.safeLoad(
-      fs.readFileSync(this.specPath, 'utf-8')
-    ) as OpenApiDocument;
+  public loadOpenApiSpec(): OpenApiDocument | never {
+    let doc: OpenApiDocument | undefined;
+
+    try {
+      doc = jsYaml.safeLoad(
+        fs.readFileSync(this.specPath, 'utf-8')
+      ) as OpenApiDocument;
+      return doc;
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        throw new Error(
+          `${colors.red(
+            `No such file or directory: ${colors.red.bold(err.path)}`
+          )}`
+        );
+      } else {
+        throw err;
+      }
+    }
   }
 
   /**
