@@ -1,18 +1,19 @@
 import * as fs from 'fs';
 import * as jsYaml from 'js-yaml';
-import {
-  OpenApiValidator,
-  OpenApiDocument,
-  ValidationError
-} from 'express-openapi-validate';
+import { OpenApiValidator, OpenApiDocument } from 'express-openapi-validate';
 import {
   Operation,
-  PathsObject,
   PathItemObject
 } from 'express-openapi-validate/dist/OpenApiDocument';
 
 import { EndpointValidator } from './endpoint-validator';
 
+/**
+ * A class encapsulating the boilerplate required to call the EndpointValidator.
+ *
+ * Simply instantiate a new instance of this class with a file path to the spec file,
+ * and the root URL of the API to test against, and then call the validate() method.
+ */
 export class SpecValidator {
   constructor(specPath: string, apiUrl: string) {
     this.specPath = specPath;
@@ -30,34 +31,41 @@ export class SpecValidator {
   private document: OpenApiDocument;
   private validator: OpenApiValidator;
 
-  // EndpointValidator.validate(validator, 'get', 'plans', apiUrl);
-
+  /**
+   * Parses an OA3 spec using jsYaml & fs
+   */
   public loadOpenApiSpec(): OpenApiDocument {
     return jsYaml.safeLoad(
       fs.readFileSync(this.specPath, 'utf-8')
     ) as OpenApiDocument;
   }
 
-  public generatePathsToValidate(doc: OpenApiDocument): PathItemObject[] {
-    return Object.values({ ...doc.paths });
-  }
-
+  /**
+   *  Gathers paths & their descendant HTTP Operations from the validator's currently parsed
+   *  OA3 spec and passes then to the static EndpointValidator.validate method.
+   */
   public validateSpec(): void {
-    const pathsToValidate: string[] = Object.keys(this.document.paths);
+    if (!this.document) {
+      throw new Error('No OA3 document found!');
+    } else {
+      const pathsToValidate: string[] = Object.keys(this.document.paths);
 
-    pathsToValidate.forEach(path => {
-      console.log(path);
+      pathsToValidate.forEach(path => {
+        const pathObj: PathItemObject = this.document.paths[path];
+        const operations = this.getDefinedHttpOperations(pathObj);
 
-      const pathObj: PathItemObject = this.document.paths[path];
-      const operations = this.getDefinedHttpOperations(pathObj);
-
-      operations.forEach(op => {
-        path = path.replace('/', '');
-        EndpointValidator.validate(this.validator, op, path, this.apiUrl);
+        operations.forEach(op => {
+          path = path.replace('/', '');
+          EndpointValidator.validate(this.validator, op, path, this.apiUrl);
+        });
       });
-    });
+    }
   }
 
+  /**
+   * Returns an array of Operations from a PathItemObject.
+   * (currently only supports **get** | **post** | **delete** | **put** | **patch**)
+   */
   private getDefinedHttpOperations(pathItem: PathItemObject): Operation[] {
     const operations: Operation[] = [];
 
