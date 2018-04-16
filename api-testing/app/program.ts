@@ -2,7 +2,15 @@ import * as colors from 'colors';
 import { SpecValidator } from './spec-validator';
 import * as commander from 'commander';
 
-commander.version('1.0.0').description("@ten-group's Open API 3 Defender!");
+const getVersion = (): string => {
+  return require('../package.json').version
+    ? require('../package.json').version
+    : 'nice';
+};
+
+const version = getVersion();
+
+commander.version(version).description("@ten-group's Open API 3 Defender!");
 
 commander
   .command('validate')

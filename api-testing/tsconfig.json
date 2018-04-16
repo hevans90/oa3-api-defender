@@ -1,12 +1,13 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2017",
-        "strict": true,
-        "noImplicitAny": false,
-        "sourceMap": true,
-        "moduleResolution": "node",
-        "removeComments": true,
-        "outDir": "dist"
-    }
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "strict": true,
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "removeComments": true,
+    "outDir": "dist"
+  },
+  "exclude": ["app/**/*.spec.ts"]
 }
