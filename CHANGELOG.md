@@ -1,3 +1,12 @@
+<a name="1.0.6"></a>
+## [1.0.6](https://github.com/tenproduct/oa3-api-defender/compare/v1.0.5...v1.0.6) (2018-04-17)
+
+
+### Bug Fixes
+
+* manual back-update CHANGELOG ([195d97f](https://github.com/tenproduct/oa3-api-defender/commit/195d97f))
+* remove old release config (now configured in package.json) ([ac4bee4](https://github.com/tenproduct/oa3-api-defender/commit/ac4bee4))
+
 <a name="1.0.5"></a>
 ## [1.0.5](https://github.com/tenproduct/oa3-api-defender/compare/v1.0.4...v1.0.5) (2018-04-17)
 
