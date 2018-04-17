@@ -1,6 +1,6 @@
 {
   "name": "@ten-group/oa3-api-defender",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "dist/spec-validator.js",
   "bin": "dist/program.js",
   "license": "MIT",
