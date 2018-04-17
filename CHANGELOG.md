@@ -1,3 +1,11 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/tenproduct/oa3-api-defender/compare/v1.0.6...v1.1.0) (2018-04-17)
+
+
+### Features
+
+* display CLI version at runtime ([9d490b3](https://github.com/tenproduct/oa3-api-defender/commit/9d490b3))
+
 <a name="1.0.6"></a>
 ## [1.0.6](https://github.com/tenproduct/oa3-api-defender/compare/v1.0.5...v1.0.6) (2018-04-17)
 
