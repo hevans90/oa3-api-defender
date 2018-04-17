@@ -1,3 +1,11 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/tenproduct/oa3-api-defender/compare/v1.1.0...v1.1.1) (2018-04-17)
+
+
+### Bug Fixes
+
+* add colors depenency ([7be0404](https://github.com/tenproduct/oa3-api-defender/commit/7be0404))
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/tenproduct/oa3-api-defender/compare/v1.0.6...v1.1.0) (2018-04-17)
 
