@@ -4,6 +4,10 @@
   "main": "dist/spec-validator.js",
   "bin": "dist/program.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tenproduct/ten-platform-api-spec.git"
+  },
   "scripts": {
     "build": "tsc -d -p tsconfig.json",
     "api-test":
