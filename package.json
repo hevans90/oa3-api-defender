@@ -21,6 +21,18 @@
     "test": "nodemon --ext ts --exec 'jasmine-ts \"src/**/*.spec.ts\"'",
     "test:ci": "jasmine-ts src/**/*.spec.ts"
   },
+  "release": {
+    "verifyConditions": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ],
+    "prepare": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ]
+  },
   "dependencies": {
     "commander": "^2.15.1",
     "express-openapi-validate": "^0.4.1",
@@ -28,6 +40,8 @@
     "request": "^2.85.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^2.0.1",
+    "@semantic-release/git": "^4.0.1",
     "@types/express": "^4.11.1",
     "@types/jasmine": "^2.8.6",
     "@types/js-yaml": "^3.11.1",
