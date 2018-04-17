@@ -11,6 +11,10 @@
   "publishConfig": {
     "access" : "public"
   },
+  "files": [
+    "src",
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -d -p tsconfig.json",
     "api-test":
