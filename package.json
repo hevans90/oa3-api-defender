@@ -1,6 +1,6 @@
 {
   "name": "@ten-group/oa3-api-defender",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/spec-validator.js",
   "bin": "dist/program.js",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "url": "https://github.com/tenproduct/oa3-api-defender.git"
   },
   "publishConfig": {
-    "access" : "public"
+    "access": "public"
   },
   "files": [
     "src",
@@ -17,8 +17,7 @@
   ],
   "scripts": {
     "build": "tsc -d -p tsconfig.json",
-    "api-test":
-      "npx nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec ts-node src/program.ts validate --specPath=../test.yaml --url=http://localhost:4040",
+    "api-test": "npx nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec ts-node src/program.ts validate --specPath=../test.yaml --url=http://localhost:4040",
     "test": "nodemon --ext ts --exec 'jasmine-ts \"src/**/*.spec.ts\"'",
     "test:ci": "jasmine-ts src/**/*.spec.ts"
   },
