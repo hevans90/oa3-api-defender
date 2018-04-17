@@ -9,5 +9,5 @@
     "removeComments": true,
     "outDir": "dist"
   },
-  "exclude": ["app/**/*.spec.ts"]
+  "exclude": ["app/**/*.spec.ts", "dist"]
 }
