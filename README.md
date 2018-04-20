@@ -16,3 +16,5 @@ ___
 
 - `--specPath` path to an Open Api 3 Specification written in `YAML`.
 - `--url` fully qualified URL to the API to call (don't use production, especially if your spec has CRUD operations!!).
+
+![Alt text](docs/example_output.png?raw=true "CLI Output")
