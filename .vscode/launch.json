@@ -8,7 +8,15 @@
       "type": "node",
       "request": "launch",
       "name": "Launch API Testing",
-      "program": "${workspaceFolder}/api-testing/dist/program.js"
+      "program": "${workspaceFolder}/dist/oa3-def.js",
+      "args": [
+        "validate",
+        "--specPath", "swagger.yaml",
+        "--url", "http://localhost:4040"
+      ],
+      "env": {
+        "debug": "*"
+      }
     },
   ]
 }
