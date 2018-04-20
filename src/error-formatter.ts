@@ -3,7 +3,8 @@ import {
   ErrorObject,
   AdditionalPropertiesParams,
   RequiredParams,
-  TypeParams
+  TypeParams,
+  EnumParams,
 } from 'ajv';
 import { Keyword } from './keyword';
 
@@ -45,8 +46,18 @@ export class ErrorFormatter {
         suffix = (errorData.params as RequiredParams).missingProperty;
         break;
       }
+      case Keyword.enum: {
+        prefix = errorData.dataPath;
+        errorData.message = `\'${colors.red.bold(
+          errorData.data,
+        )}\' should be equal to one of the allowed values:`;
+        suffix = (errorData.params as EnumParams).allowedValues.join(' ');
+        break;
+      }
       default: {
         prefix = errorData.dataPath;
+        // console.log(errorData.keyword);
+        // console.log(JSON.stringify(errorData.params));
       }
     }
 
@@ -60,10 +71,10 @@ export class ErrorFormatter {
 
     const formattedError: ErrorFormat = {
       message: `${formatPrefix(prefix)} - ${errorData.message} ${formatSuffix(
-        suffix
+        suffix,
       )}`,
       prefix: prefix,
-      suffix: suffix
+      suffix: suffix,
     };
 
     return formattedError;
