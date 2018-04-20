@@ -20,7 +20,7 @@
   "scripts": {
     "build": "tsc -d -p tsconfig.json",
     "api-test": "npx nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec ts-node src/oa3-def.ts validate --specPath=swagger.yaml --url=http://localhost:4040",
-    "test": "nodemon --ext ts --exec 'jasmine-ts \"src/**/*.spec.ts\"'",
+    "test": "nodemon --ext ts --exec 'jasmine-ts \"src/**/*.spec.ts\"' --no-color",
     "test:ci": "jasmine-ts src/**/*.spec.ts"
   },
   "release": {
