@@ -1,7 +1,7 @@
 import * as colors from 'colors';
 import {
   OpenApiValidator,
-  ValidationError
+  ValidationError,
 } from 'express-openapi-validate/dist';
 import { Operation } from 'express-openapi-validate/dist/OpenApiDocument';
 
@@ -20,64 +20,65 @@ export class EndPointValidator {
     operation: Operation,
     path: string,
     rootUrl: string,
-    body?: Object
+    body?: Object,
   ) {
     /**
      * Generated validation function from the validator's consumed OpenApiDocument,
      * using ajv under the hood
      */
+
     const validateFn: (res: any) => void = validator.validateResponse(
       operation,
-      `/${path}`
+      path,
     );
 
     switch (operation) {
       // "get" | "put" | "post" | "patch" | "delete"
       case 'get': {
-        request.get(`${rootUrl}/${path}`, (err: any, res: request.Response) => {
+        request.get(`${rootUrl}${path}`, (err: any, res: request.Response) => {
           this.verifyRequest(err, res, operation, path, validateFn);
         });
         break;
       }
       case 'post': {
         request.post(
-          { url: `${rootUrl}/${path}`, body: body ? body : null },
+          { url: `${rootUrl}${path}`, body: body ? body : null },
           (err: any, res: request.Response) => {
             this.verifyRequest(err, res, operation, path, validateFn);
-          }
+          },
         );
         break;
       }
       case 'delete': {
         request.delete(
-          `${rootUrl}/${path}`,
+          `${rootUrl}${path}`,
           (err: any, res: request.Response) => {
             this.verifyRequest(err, res, operation, path, validateFn);
-          }
+          },
         );
         break;
       }
       case 'put': {
         request.put(
-          { url: `${rootUrl}/${path}`, body: body ? body : null },
+          { url: `${rootUrl}${path}`, body: body ? body : null },
           (err: any, res: request.Response) => {
             this.verifyRequest(err, res, operation, path, validateFn);
-          }
+          },
         );
         break;
       }
       case 'patch': {
         request.patch(
-          { url: `${rootUrl}/${path}`, body: body ? body : null },
+          { url: `${rootUrl}${path}`, body: body ? body : null },
           (err: any, res: request.Response) => {
             this.verifyRequest(err, res, operation, path, validateFn);
-          }
+          },
         );
         break;
       }
       default: {
         throw new Error(
-          'this tool currently only supports "get" | "post" | "delete" | "put" | "patch" HTTP operations, sorry!'
+          'this tool currently only supports "get" | "post" | "delete" | "put" | "patch" HTTP operations, sorry!',
         );
       }
     }
@@ -88,10 +89,21 @@ export class EndPointValidator {
     res: request.Response,
     operation: Operation,
     path: string,
-    validateFn: any
+    validateFn: any,
   ) {
     if (err) {
       console.log(`${colors.red(err)}`);
+    } else if (
+      res.statusCode.toString().startsWith('4') ||
+      res.statusCode.toString().startsWith('5')
+    ) {
+      this.outputFormattedPath(
+        operation,
+        path,
+        res.statusCode,
+        res.statusMessage,
+        true,
+      );
     } else {
       res.body = JSON.parse(res.body);
       this.runValidator(res, operation, path, validateFn);
@@ -100,21 +112,27 @@ export class EndPointValidator {
 
   public static runValidator(
     res: request.Response,
-    operation: string,
+    operation: Operation,
     path: string,
-    validateFn: (res: request.Response) => void
+    validateFn: (res: request.Response) => void,
   ): void {
     try {
       validateFn(res);
+      this.outputFormattedPath(
+        operation,
+        path,
+        res.statusCode,
+        res.statusMessage,
+      );
     } catch (error) {
       const xerr: ValidationError = error;
-
-      console.log(
-        `${operation.toUpperCase()} ${colors.bold.bgMagenta(
-          `/${path}`
-        )} - ${colors.underline.bold.red(
-          `${xerr.data.length} problems found`
-        )}:\n`
+      this.outputFormattedPath(
+        operation,
+        path,
+        res.statusCode,
+        res.statusMessage,
+        false,
+        error,
       );
 
       let currentIndex: number;
@@ -129,11 +147,43 @@ export class EndPointValidator {
             console.log('');
           }
         }
-
         console.log(`  ${formattedError.message}`);
+        if (i === xerr.data.length - 1) {
+          console.log('');
+        }
       });
-    } finally {
+    }
+  }
+
+  public static outputFormattedPath(
+    op: Operation,
+    path: string,
+    statusCode: number,
+    statusMessage: string,
+    serverError?: boolean,
+    valError?: ValidationError,
+  ): void {
+    if (valError) {
+      console.log(
+        `${op.toUpperCase()} ${colors.bold.green(
+          path,
+        )}: ${statusCode} - ${colors.underline.bold.red(
+          `${valError.data.length} problems found`,
+        )}:`,
+      );
       console.log('');
+    } else if (serverError) {
+      console.log(
+        `${op.toUpperCase()} ${colors.bold.bgRed(path)}: ${colors.bold(
+          `${statusCode}`,
+        )} - ${statusMessage}`,
+      );
+    } else {
+      console.log(
+        `${op.toUpperCase()} ${colors.bold.green(
+          path,
+        )}: ${statusCode} - no problems found`,
+      );
     }
   }
 
@@ -145,7 +195,7 @@ export class EndPointValidator {
     const arrString = (prefix.match(this.arrRegex) as RegExpMatchArray)[0]; // i.e [12]
     const index = parseInt(
       (arrString.match(this.integerRegex) as RegExpMatchArray)[0],
-      10
+      10,
     ); // i.e. 12
     return index;
   }
