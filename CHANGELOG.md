@@ -1,3 +1,17 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/tenproduct/oa3-api-defender/compare/v1.1.1...v1.2.0) (2018-04-20)
+
+
+### Bug Fixes
+
+* stop stripping random forward slashes from paths ([6be0ada](https://github.com/tenproduct/oa3-api-defender/commit/6be0ada))
+
+
+### Features
+
+* support 'enum' error params ([1f604c9](https://github.com/tenproduct/oa3-api-defender/commit/1f604c9))
+* support 4xx & 5xx request error output ([2ae9207](https://github.com/tenproduct/oa3-api-defender/commit/2ae9207))
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/tenproduct/oa3-api-defender/compare/v1.1.0...v1.1.1) (2018-04-17)
 
