@@ -55,8 +55,8 @@ describe('SpecValidator', () => {
     mockFs({
       [fakeDir]: {
         [fakeSpecFileName]: fakeSpec,
-        'broken-spec.yaml': 'I r brokens'
-      }
+        'broken-spec.yaml': 'I r brokens',
+      },
     });
 
     specValidator = new SpecValidator(
@@ -65,8 +65,8 @@ describe('SpecValidator', () => {
       {
         validate: (): void => {
           '';
-        }
-      }
+        },
+      },
     );
   });
 
@@ -79,7 +79,7 @@ describe('SpecValidator', () => {
   });
   it('should NOT create if spec cannot be found', () => {
     expect(
-      () => new SpecValidator(`${fakeDir}/invalid_file_path.yaml`, '')
+      () => new SpecValidator(`${fakeDir}/invalid_file_path.yaml`, ''),
     ).toThrow();
   });
 
@@ -92,7 +92,7 @@ describe('SpecValidator', () => {
     });
     it('should NOT load invalid OA3 specs successfully', () => {
       expect(
-        () => new SpecValidator(`${fakeDir}/broken-spec.yaml`, '')
+        () => new SpecValidator(`${fakeDir}/broken-spec.yaml`, ''),
       ).toThrow();
     });
   });
@@ -102,47 +102,47 @@ describe('SpecValidator', () => {
       put: { responses: '200' },
       post: { responses: '200' },
       delete: { responses: '200' },
-      patch: { responses: '200' }
+      patch: { responses: '200' },
     };
 
     it('should correctly convert a PathItemObject (all verbs) to Operation[]', () => {
       expect(
-        specValidator.getDefinedHttpOperations(mockPathItemObject)
+        specValidator.getDefinedHttpOperations(mockPathItemObject),
       ).toEqual(['get', 'post', 'delete', 'put', 'patch']);
     });
 
     it('should correctly convert a PathItemObject (get only) to Operation[]', () => {
       mockPathItemObject = { get: { responses: '' } };
       expect(
-        specValidator.getDefinedHttpOperations(mockPathItemObject)
+        specValidator.getDefinedHttpOperations(mockPathItemObject),
       ).toEqual(['get']);
     });
 
     it('should correctly convert a PathItemObject (post only) to Operation[]', () => {
       mockPathItemObject = { post: { responses: '' } };
       expect(
-        specValidator.getDefinedHttpOperations(mockPathItemObject)
+        specValidator.getDefinedHttpOperations(mockPathItemObject),
       ).toEqual(['post']);
     });
 
     it('should correctly convert a PathItemObject (delete only) to Operation[]', () => {
       mockPathItemObject = { delete: { responses: '' } };
       expect(
-        specValidator.getDefinedHttpOperations(mockPathItemObject)
+        specValidator.getDefinedHttpOperations(mockPathItemObject),
       ).toEqual(['delete']);
     });
 
     it('should correctly convert a PathItemObject (put only) to Operation[]', () => {
       mockPathItemObject = { put: { responses: '' } };
       expect(
-        specValidator.getDefinedHttpOperations(mockPathItemObject)
+        specValidator.getDefinedHttpOperations(mockPathItemObject),
       ).toEqual(['put']);
     });
 
     it('should correctly convert a PathItemObject (patch only) to Operation[]', () => {
       mockPathItemObject = { patch: { responses: '' } };
       expect(
-        specValidator.getDefinedHttpOperations(mockPathItemObject)
+        specValidator.getDefinedHttpOperations(mockPathItemObject),
       ).toEqual(['patch']);
     });
   });
@@ -156,8 +156,8 @@ describe('SpecValidator', () => {
       expect(validateSpy).toHaveBeenCalledWith(
         specValidator.oa3Validator,
         'get',
-        'potatoes',
-        fakeApiUrl
+        '/potatoes',
+        fakeApiUrl,
       );
     });
   });

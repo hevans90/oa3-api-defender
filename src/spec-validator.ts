@@ -4,7 +4,7 @@ import * as colors from 'colors';
 import { OpenApiValidator, OpenApiDocument } from 'express-openapi-validate';
 import {
   Operation,
-  PathItemObject
+  PathItemObject,
 } from 'express-openapi-validate/dist/OpenApiDocument';
 
 import { EndPointValidator } from './endpoint-validator';
@@ -19,7 +19,7 @@ export class SpecValidator {
   constructor(
     specPath: string,
     apiUrl: string,
-    endPointValidator?: EndPointValidator // simple DI
+    endPointValidator?: EndPointValidator, // simple DI
   ) {
     this.specPath = specPath;
     this.apiUrl = apiUrl;
@@ -30,7 +30,7 @@ export class SpecValidator {
 
     this._document = this.loadOpenApiSpec();
     this._oa3Validator = new OpenApiValidator(this.document, {
-      ajvOptions: { allErrors: true, verbose: true }
+      ajvOptions: { allErrors: true, verbose: true },
     });
   }
 
@@ -57,15 +57,15 @@ export class SpecValidator {
 
     try {
       doc = jsYaml.safeLoad(
-        fs.readFileSync(this.specPath, 'utf-8')
+        fs.readFileSync(this.specPath, 'utf-8'),
       ) as OpenApiDocument;
       return doc;
     } catch (err) {
       if (err.code === 'ENOENT') {
         throw new Error(
           `${colors.red(
-            `No such file or directory: ${colors.red.bold(err.path)}`
-          )}`
+            `No such file or directory: ${colors.red.bold(err.path)}`,
+          )}`,
         );
       } else {
         throw err;
@@ -88,22 +88,20 @@ export class SpecValidator {
         const operations = this.getDefinedHttpOperations(pathObj);
 
         operations.forEach(op => {
-          path = path.replace('/', '');
-
           // very rudimentary DI
           if (this.endPointValidator) {
             this.endPointValidator.validate(
               this._oa3Validator,
               op,
               path,
-              this.apiUrl
+              this.apiUrl,
             );
           } else {
             EndPointValidator.validate(
               this._oa3Validator,
               op,
               path,
-              this.apiUrl
+              this.apiUrl,
             );
           }
         });
