@@ -1,3 +1,5 @@
+[![buddy pipeline](https://app.buddy.works/ten-group/oa3-api-defender/pipelines/pipeline/134506/badge.svg?token=c9d837df8a7f38d88799f389e1d98d383f4ba39ac89e162e67473da8ac8d3ed1 "buddy pipeline")](https://app.buddy.works/ten-group/oa3-api-defender/pipelines/pipeline/134506)
+
 # Open Api 3 <--> RESTFul API Defender
 
 This tool is a CLI that parses an [Open Api 3 Specification](https://swagger.io/specification/), calls a real API based on the spec's `paths` & associated response `schemas`, and provides command line validation on the output.
