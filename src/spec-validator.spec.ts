@@ -62,6 +62,7 @@ describe('SpecValidator', () => {
     specValidator = new SpecValidator(
       `${fakeDir}/${fakeSpecFileName}`,
       fakeApiUrl,
+      undefined,
       {
         validate: (): void => {
           '';

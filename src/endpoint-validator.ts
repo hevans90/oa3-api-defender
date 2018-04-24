@@ -4,9 +4,11 @@ import {
   ValidationError,
 } from 'express-openapi-validate/dist';
 import { Operation } from 'express-openapi-validate/dist/OpenApiDocument';
-
+import * as Debug from 'debug';
 import * as request from 'request';
 import { ErrorFormatter } from './error-formatter';
+
+const debug = Debug('oa3-def');
 
 export class EndPointValidator {
   /**
@@ -21,28 +23,48 @@ export class EndPointValidator {
     path: string,
     rootUrl: string,
     body?: Object,
+    auth?: string,
   ) {
     /**
      * Generated validation function from the validator's consumed OpenApiDocument,
      * using ajv under the hood
      */
 
+    debug(`  ${path}... (${operation})`);
+
     const validateFn: (res: any) => void = validator.validateResponse(
       operation,
       path,
     );
 
+    const headers: request.Headers | undefined = auth
+      ? {
+          Authorization: auth,
+        }
+      : undefined;
+
     switch (operation) {
       // "get" | "put" | "post" | "patch" | "delete"
       case 'get': {
-        request.get(`${rootUrl}${path}`, (err: any, res: request.Response) => {
-          this.verifyRequest(err, res, operation, path, validateFn);
-        });
+        request.get(
+          `${rootUrl}${path}`,
+          {
+            headers: headers ? headers : undefined,
+          },
+          (err: any, res: request.Response) => {
+            this.verifyRequest(err, res, operation, path, validateFn);
+          },
+        );
         break;
       }
       case 'post': {
         request.post(
-          { url: `${rootUrl}${path}`, body: body ? body : null },
+          {
+            url: `${rootUrl}${path}`,
+            headers: headers ? headers : undefined,
+            body: body ? body : undefined,
+            json: true,
+          },
           (err: any, res: request.Response) => {
             this.verifyRequest(err, res, operation, path, validateFn);
           },
@@ -52,6 +74,9 @@ export class EndPointValidator {
       case 'delete': {
         request.delete(
           `${rootUrl}${path}`,
+          {
+            headers: headers ? headers : undefined,
+          },
           (err: any, res: request.Response) => {
             this.verifyRequest(err, res, operation, path, validateFn);
           },
@@ -60,7 +85,12 @@ export class EndPointValidator {
       }
       case 'put': {
         request.put(
-          { url: `${rootUrl}${path}`, body: body ? body : null },
+          {
+            url: `${rootUrl}${path}`,
+            headers: headers ? headers : undefined,
+            body: body ? body : undefined,
+            json: true,
+          },
           (err: any, res: request.Response) => {
             this.verifyRequest(err, res, operation, path, validateFn);
           },
@@ -69,7 +99,12 @@ export class EndPointValidator {
       }
       case 'patch': {
         request.patch(
-          { url: `${rootUrl}${path}`, body: body ? body : null },
+          {
+            url: `${rootUrl}${path}`,
+            headers: headers ? headers : undefined,
+            body: body ? body : undefined,
+            json: true,
+          },
           (err: any, res: request.Response) => {
             this.verifyRequest(err, res, operation, path, validateFn);
           },

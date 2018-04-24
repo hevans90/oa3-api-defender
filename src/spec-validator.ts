@@ -22,10 +22,12 @@ export class SpecValidator {
   constructor(
     specPath: string,
     apiUrl: string,
+    auth?: string,
     endPointValidator?: EndPointValidator, // simple DI
   ) {
     this.specPath = specPath;
     this.apiUrl = apiUrl;
+    this.auth = auth ? auth : undefined;
 
     if (endPointValidator) {
       this.endPointValidator = endPointValidator;
@@ -41,6 +43,7 @@ export class SpecValidator {
 
   private specPath: string;
   private apiUrl: string;
+  private auth: string | undefined;
 
   private _document: OpenApiDocument;
   get document(): OpenApiDocument {
@@ -94,6 +97,8 @@ export class SpecValidator {
         const pathObj: PathItemObject = this.document.paths[path];
         const operations = this.getDefinedHttpOperations(pathObj);
 
+        const reqBody = {};
+
         operations.forEach(op => {
           // very rudimentary DI
           if (this.endPointValidator) {
@@ -109,6 +114,8 @@ export class SpecValidator {
               op,
               path,
               this.apiUrl,
+              reqBody,
+              this.auth,
             );
           }
         });

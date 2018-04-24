@@ -25,8 +25,12 @@ commander
   .command('validate')
   .option('--specPath <string>', 'Absolute path to a valid OA3 Specification')
   .option('--url <string>', 'Fully qualified URL of the API to interrogate')
+  .option(
+    '--auth <string>',
+    'String to be added as an Authorization header to requests',
+  )
   .description('Validate an API versus an OA3 Spec')
-  .action((cmd: { specPath: string; url: string }) => {
+  .action((cmd: { specPath: string; url: string; auth?: string }) => {
     if (!cmd.specPath) {
       console.log(
         colors.red(
@@ -40,7 +44,7 @@ commander
       );
       return;
     } else {
-      new SpecValidator(cmd.specPath, cmd.url).validateSpec();
+      new SpecValidator(cmd.specPath, cmd.url, cmd.auth).validateSpec();
     }
   });
 
