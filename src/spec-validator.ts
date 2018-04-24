@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as jsYaml from 'js-yaml';
 import * as colors from 'colors';
+import * as Debug from 'debug';
 import { OpenApiValidator, OpenApiDocument } from 'express-openapi-validate';
 import {
   Operation,
@@ -8,6 +9,8 @@ import {
 } from 'express-openapi-validate/dist/OpenApiDocument';
 
 import { EndPointValidator } from './endpoint-validator';
+
+const debug = Debug('oa3-def');
 
 /**
  * A class encapsulating the boilerplate required to call the EndpointValidator.
@@ -56,9 +59,11 @@ export class SpecValidator {
     let doc: OpenApiDocument | undefined;
 
     try {
+      debug(`Trying to parse spec: ${this.specPath}...`);
       doc = jsYaml.safeLoad(
         fs.readFileSync(this.specPath, 'utf-8'),
       ) as OpenApiDocument;
+      debug('Success!');
       return doc;
     } catch (err) {
       if (err.code === 'ENOENT') {
@@ -82,6 +87,8 @@ export class SpecValidator {
       throw new Error('No OA3 document found!');
     } else {
       const pathsToValidate: string[] = Object.keys(this.document.paths);
+
+      debug(`Found ${pathsToValidate.length} paths to validate...`);
 
       pathsToValidate.forEach(path => {
         const pathObj: PathItemObject = this.document.paths[path];

@@ -30,13 +30,13 @@ commander
     if (!cmd.specPath) {
       console.log(
         colors.red(
-          'No --specPath argument specified, please pass this parameter'
-        )
+          'No --specPath argument specified, please pass this parameter',
+        ),
       );
       return;
     } else if (!cmd.url) {
       console.log(
-        colors.red('No --url argument specified, please pass this parameter')
+        colors.red('No --url argument specified, please pass this parameter'),
       );
       return;
     } else {
