@@ -1,3 +1,11 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/tenproduct/oa3-api-defender/compare/v1.2.0...v1.3.0) (2018-04-24)
+
+
+### Features
+
+* add optional --auth parameter ([167fd78](https://github.com/tenproduct/oa3-api-defender/commit/167fd78))
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/tenproduct/oa3-api-defender/compare/v1.1.1...v1.2.0) (2018-04-20)
 
