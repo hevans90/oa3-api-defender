@@ -1,4 +1,4 @@
-[![buddy pipeline](https://app.buddy.works/ten-group/oa3-api-defender/pipelines/pipeline/134506/badge.svg?token=c9d837df8a7f38d88799f389e1d98d383f4ba39ac89e162e67473da8ac8d3ed1 "buddy pipeline")](https://app.buddy.works/ten-group/oa3-api-defender/pipelines/pipeline/134506)
+ [![npm version](https://badge.fury.io/js/%40ten-group%2Foa3-api-defender.svg)](https://badge.fury.io/js/%40ten-group%2Foa3-api-defender) [![buddy pipeline](https://app.buddy.works/ten-group/oa3-api-defender/pipelines/pipeline/134506/badge.svg?token=c9d837df8a7f38d88799f389e1d98d383f4ba39ac89e162e67473da8ac8d3ed1 "buddy pipeline")](https://app.buddy.works/ten-group/oa3-api-defender/pipelines/pipeline/134506) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 # Open Api 3 <--> RESTFul API Defender
 
