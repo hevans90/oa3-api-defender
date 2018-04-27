@@ -1,3 +1,11 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/tenproduct/oa3-api-defender/compare/v1.3.0...v1.4.0) (2018-04-27)
+
+
+### Features
+
+* add support for paramaterised requests ([51d1262](https://github.com/tenproduct/oa3-api-defender/commit/51d1262))
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/tenproduct/oa3-api-defender/compare/v1.2.0...v1.3.0) (2018-04-24)
 
