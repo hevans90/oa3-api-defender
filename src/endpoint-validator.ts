@@ -7,6 +7,7 @@ import { Operation } from 'express-openapi-validate/dist/OpenApiDocument';
 import * as Debug from 'debug';
 import * as request from 'request';
 import { ErrorFormatter } from './error-formatter';
+import { OperationConfig } from './operation-config';
 
 const debug = Debug('oa3-def');
 
@@ -19,40 +20,42 @@ export class EndPointValidator {
 
   public static validate(
     validator: OpenApiValidator,
-    operation: Operation,
-    path: string,
+    opConfig: OperationConfig,
+    originalPath: string,
+    paramaterisedPath: string,
     rootUrl: string,
     body?: Object,
     auth?: string,
   ) {
+    // debug(`  ${originalPath}... (${opConfig.operation})`);
     /**
      * Generated validation function from the validator's consumed OpenApiDocument,
      * using ajv under the hood
      */
-
-    debug(`  ${path}... (${operation})`);
-
     const validateFn: (res: any) => void = validator.validateResponse(
-      operation,
-      path,
+      opConfig.operation,
+      originalPath,
     );
 
+    /**
+     * Set Auth headers if passed
+     */
     const headers: request.Headers | undefined = auth
       ? {
           Authorization: auth,
         }
       : undefined;
 
-    switch (operation) {
+    switch (opConfig.operation) {
       // "get" | "put" | "post" | "patch" | "delete"
       case 'get': {
         request.get(
-          `${rootUrl}${path}`,
+          `${rootUrl}${paramaterisedPath}`,
           {
             headers: headers ? headers : undefined,
           },
           (err: any, res: request.Response) => {
-            this.verifyRequest(err, res, operation, path, validateFn);
+            this.verifyRequest(err, res, 'get', paramaterisedPath, validateFn);
           },
         );
         break;
@@ -60,25 +63,31 @@ export class EndPointValidator {
       case 'post': {
         request.post(
           {
-            url: `${rootUrl}${path}`,
+            url: `${rootUrl}${paramaterisedPath}`,
             headers: headers ? headers : undefined,
             body: body ? body : undefined,
             json: true,
           },
           (err: any, res: request.Response) => {
-            this.verifyRequest(err, res, operation, path, validateFn);
+            this.verifyRequest(err, res, 'post', paramaterisedPath, validateFn);
           },
         );
         break;
       }
       case 'delete': {
         request.delete(
-          `${rootUrl}${path}`,
+          `${rootUrl}${paramaterisedPath}`,
           {
             headers: headers ? headers : undefined,
           },
           (err: any, res: request.Response) => {
-            this.verifyRequest(err, res, operation, path, validateFn);
+            this.verifyRequest(
+              err,
+              res,
+              'delete',
+              paramaterisedPath,
+              validateFn,
+            );
           },
         );
         break;
@@ -86,13 +95,13 @@ export class EndPointValidator {
       case 'put': {
         request.put(
           {
-            url: `${rootUrl}${path}`,
+            url: `${rootUrl}${paramaterisedPath}`,
             headers: headers ? headers : undefined,
             body: body ? body : undefined,
             json: true,
           },
           (err: any, res: request.Response) => {
-            this.verifyRequest(err, res, operation, path, validateFn);
+            this.verifyRequest(err, res, 'put', paramaterisedPath, validateFn);
           },
         );
         break;
@@ -100,13 +109,19 @@ export class EndPointValidator {
       case 'patch': {
         request.patch(
           {
-            url: `${rootUrl}${path}`,
+            url: `${rootUrl}${paramaterisedPath}`,
             headers: headers ? headers : undefined,
             body: body ? body : undefined,
             json: true,
           },
           (err: any, res: request.Response) => {
-            this.verifyRequest(err, res, operation, path, validateFn);
+            this.verifyRequest(
+              err,
+              res,
+              'patch',
+              paramaterisedPath,
+              validateFn,
+            );
           },
         );
         break;
@@ -176,6 +191,10 @@ export class EndPointValidator {
         const formattedError = ErrorFormatter.formatError(errorObj);
 
         if (this.isArrayResponse(formattedError.prefix)) {
+          if (i === 0) {
+            debug('Array response detected');
+          }
+
           const prevIndex = currentIndex;
           currentIndex = this.getArrayIndex(formattedError.prefix);
           if (currentIndex !== prevIndex && i !== 0) {

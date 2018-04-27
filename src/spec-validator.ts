@@ -6,9 +6,12 @@ import { OpenApiValidator, OpenApiDocument } from 'express-openapi-validate';
 import {
   Operation,
   PathItemObject,
+  OperationObject,
 } from 'express-openapi-validate/dist/OpenApiDocument';
 
 import { EndPointValidator } from './endpoint-validator';
+import { OperationConfig } from './operation-config';
+import { ParamParser } from './param-parser';
 
 const debug = Debug('oa3-def');
 
@@ -99,20 +102,27 @@ export class SpecValidator {
 
         const reqBody = {};
 
-        operations.forEach(op => {
+        operations.forEach(opConfig => {
+          const paramaterisedPath = ParamParser.generateParamaterisedPath(
+            path,
+            opConfig,
+          );
+
           // very rudimentary DI
           if (this.endPointValidator) {
+            debug(`opConfig: ${JSON.stringify(opConfig, null, 2)}`);
             this.endPointValidator.validate(
               this._oa3Validator,
-              op,
+              opConfig,
               path,
               this.apiUrl,
             );
           } else {
             EndPointValidator.validate(
               this._oa3Validator,
-              op,
+              opConfig,
               path,
+              paramaterisedPath,
               this.apiUrl,
               reqBody,
               this.auth,
@@ -127,14 +137,19 @@ export class SpecValidator {
    * Returns an array of Operations from a PathItemObject.
    * (currently only supports **get** | **post** | **delete** | **put** | **patch**)
    */
-  public getDefinedHttpOperations(pathItem: PathItemObject): Operation[] {
-    const operations: Operation[] = [];
+  public getDefinedHttpOperations(pathItem: PathItemObject): OperationConfig[] {
+    const operations: OperationConfig[] = [];
 
-    if (pathItem.get) operations.push('get');
-    if (pathItem.post) operations.push('post');
-    if (pathItem.delete) operations.push('delete');
-    if (pathItem.put) operations.push('put');
-    if (pathItem.patch) operations.push('patch');
+    if (pathItem.get)
+      operations.push({ operation: 'get', config: pathItem.get });
+    if (pathItem.post)
+      operations.push({ operation: 'post', config: pathItem.post });
+    if (pathItem.delete)
+      operations.push({ operation: 'delete', config: pathItem.delete });
+    if (pathItem.put)
+      operations.push({ operation: 'put', config: pathItem.put });
+    if (pathItem.patch)
+      operations.push({ operation: 'patch', config: pathItem.patch });
 
     return operations;
   }

@@ -30,8 +30,13 @@ ___
 
 ![Alt text](docs/example_output.png?raw=true "CLI Output")
 
+Requests with path (`/path{id}`) or query (`/path?query=1&nice=2`) will be called **only if the OA3 spec contains valid examples for the parameters**:
+
+![Alt text](docs/paramaterised_get_output.png?raw=true "CLI Output")
+
+
 ## Known Issues/WIPs
 
-- The Tool cannot currently handle paramaterised requests : `url/{id}` or `url/{id}/nestedpath`, I am working on a solution: grabbing example param values from the OA3 spec and automatically calling the endpoints with them.
+- ~~The Tool cannot currently handle paramaterised requests : `url/{id}` or `url/{id}/nestedpath`, I am working on a solution: grabbing example param values from the OA3 spec and automatically calling the endpoints with them.~~ Paramaterised (path + query only) requests are now implemented as of version 1.4.
 
 - The Tool cannot currently properly handle requests with request bodies, I am also working on this, though the solution to this is a little more involved - give me a few days :)

@@ -109,42 +109,48 @@ describe('SpecValidator', () => {
     it('should correctly convert a PathItemObject (all verbs) to Operation[]', () => {
       expect(
         specValidator.getDefinedHttpOperations(mockPathItemObject),
-      ).toEqual(['get', 'post', 'delete', 'put', 'patch']);
+      ).toEqual([
+        { operation: 'get', config: { responses: '200' } },
+        { operation: 'post', config: { responses: '200' } },
+        { operation: 'delete', config: { responses: '200' } },
+        { operation: 'put', config: { responses: '200' } },
+        { operation: 'patch', config: { responses: '200' } },
+      ]);
     });
 
     it('should correctly convert a PathItemObject (get only) to Operation[]', () => {
       mockPathItemObject = { get: { responses: '' } };
       expect(
         specValidator.getDefinedHttpOperations(mockPathItemObject),
-      ).toEqual(['get']);
+      ).toEqual([{ operation: 'get', config: { responses: '' } }]);
     });
 
     it('should correctly convert a PathItemObject (post only) to Operation[]', () => {
       mockPathItemObject = { post: { responses: '' } };
       expect(
         specValidator.getDefinedHttpOperations(mockPathItemObject),
-      ).toEqual(['post']);
+      ).toEqual([{ operation: 'post', config: { responses: '' } }]);
     });
 
     it('should correctly convert a PathItemObject (delete only) to Operation[]', () => {
       mockPathItemObject = { delete: { responses: '' } };
       expect(
         specValidator.getDefinedHttpOperations(mockPathItemObject),
-      ).toEqual(['delete']);
+      ).toEqual([{ operation: 'delete', config: { responses: '' } }]);
     });
 
     it('should correctly convert a PathItemObject (put only) to Operation[]', () => {
       mockPathItemObject = { put: { responses: '' } };
       expect(
         specValidator.getDefinedHttpOperations(mockPathItemObject),
-      ).toEqual(['put']);
+      ).toEqual([{ operation: 'put', config: { responses: '' } }]);
     });
 
     it('should correctly convert a PathItemObject (patch only) to Operation[]', () => {
       mockPathItemObject = { patch: { responses: '' } };
       expect(
         specValidator.getDefinedHttpOperations(mockPathItemObject),
-      ).toEqual(['patch']);
+      ).toEqual([{ operation: 'patch', config: { responses: '' } }]);
     });
   });
 
@@ -156,10 +162,32 @@ describe('SpecValidator', () => {
       expect(validateSpy).toHaveBeenCalled();
       expect(validateSpy).toHaveBeenCalledWith(
         specValidator.oa3Validator,
-        'get',
+        {
+          operation: 'get',
+          config: {
+            description: 'Returns an array of potatoes',
+            responses: {
+              '200': {
+                description: 'A JSON array of membership plans',
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'array',
+                      items: {
+                        $ref: '#/components/schemas/Potato',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
         '/potatoes',
         fakeApiUrl,
       );
+
+      console.log(validateSpy.args);
     });
   });
 });
