@@ -14,7 +14,7 @@ export class ParamParser {
     path: string,
     opConfig: OperationConfig,
   ): string {
-    let paramPath = path.slice();
+    let paramPath = path.slice(); // keep path immutable
     let pathParams: ParameterObject[] = [];
     let queryParams: ParameterObject[] = [];
     const queryParamsDictionary = {};
