@@ -155,7 +155,12 @@ export class EndPointValidator {
         true,
       );
     } else {
-      res.body = JSON.parse(res.body);
+      debug(`body type:${typeof res.body}`);
+
+      if (typeof res.body !== 'object') {
+        res.body = JSON.parse(res.body);
+      }
+
       this.runValidator(res, operation, path, validateFn);
     }
   }
@@ -187,6 +192,11 @@ export class EndPointValidator {
 
       let currentIndex: number;
 
+      if (!xerr.data) {
+        console.log(`\n  ${colors.bold.red(xerr.message)}\n`);
+        return;
+      }
+
       xerr.data.forEach((errorObj, i) => {
         const formattedError = ErrorFormatter.formatError(errorObj);
 
@@ -217,7 +227,7 @@ export class EndPointValidator {
     serverError?: boolean,
     valError?: ValidationError,
   ): void {
-    if (valError) {
+    if (valError && valError.data) {
       console.log(
         `${op.toUpperCase()} ${colors.bold.green(
           path,
