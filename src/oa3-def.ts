@@ -13,13 +13,13 @@ const getVersion = (): string => {
 const version = getVersion();
 
 console.log('\n');
-console.log(colors.bgBlue(colors.red('         @ten-group          ')));
+console.log(colors.bgBlue(colors.red('                             ')));
 console.log(colors.bgBlue(colors.bold('====  OA3 API Defender   ====')));
 console.log(colors.bgBlue(colors.bold('_____________________________')));
 console.log(colors.bold(`v${version}`));
 console.log('\n');
 
-commander.version(version).description("@ten-group's Open API 3 Defender!");
+commander.version(version).description('Open API 3 Defender!');
 
 commander
   .command('validate')

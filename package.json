@@ -1,5 +1,5 @@
 {
-  "name": "@ten-group/oa3-api-defender",
+  "name": "oa3-api-defender",
   "version": "1.4.0",
   "main": "dist/spec-validator.js",
   "bin": {
@@ -8,7 +8,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tenproduct/oa3-api-defender.git"
+    "url": "https://github.com/hevans90/oa3-api-defender.git"
   },
   "publishConfig": {
     "access": "public"
