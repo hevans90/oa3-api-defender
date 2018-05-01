@@ -1,3 +1,11 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/hevans90/oa3-api-defender/compare/v1.4.0...v1.5.0) (2018-05-01)
+
+
+### Features
+
+* move to public repo & package ([b6f6409](https://github.com/hevans90/oa3-api-defender/commit/b6f6409))
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/tenproduct/oa3-api-defender/compare/v1.3.0...v1.4.0) (2018-04-27)
 
