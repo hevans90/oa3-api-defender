@@ -2,6 +2,8 @@
 
 # Open Api 3 <--> RESTFul API Defender
 
+This tool was moved from `@ten-group/oa3-api-defender` (which is now deprecated).
+
 This tool is a CLI that parses an [Open Api 3 Specification](https://swagger.io/specification/), calls a real API based on the spec's `paths` & associated response `schemas`, and provides command line validation on the output.
 
 ___
