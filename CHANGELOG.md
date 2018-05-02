@@ -1,3 +1,11 @@
+<a name="1.5.1"></a>
+## [1.5.1](https://github.com/hevans90/oa3-api-defender/compare/v1.5.0...v1.5.1) (2018-05-02)
+
+
+### Bug Fixes
+
+* trigger a new release for migrated package ([4ed9a73](https://github.com/hevans90/oa3-api-defender/commit/4ed9a73))
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/hevans90/oa3-api-defender/compare/v1.4.0...v1.5.0) (2018-05-01)
 
