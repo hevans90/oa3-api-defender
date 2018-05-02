@@ -4,11 +4,11 @@ import {
   ValidationError,
 } from 'express-openapi-validate/dist';
 import { Operation } from 'express-openapi-validate/dist/OpenApiDocument';
-import * as Debug from 'debug';
 import * as request from 'request';
 import { ErrorFormatter } from './error-formatter';
 import { OperationConfig } from './operation-config';
 
+import * as Debug from 'debug';
 const debug = Debug('oa3-def');
 
 export class EndPointValidator {
@@ -155,8 +155,6 @@ export class EndPointValidator {
         true,
       );
     } else {
-      debug(`body type:${typeof res.body}`);
-
       if (typeof res.body !== 'object') {
         res.body = JSON.parse(res.body);
       }
