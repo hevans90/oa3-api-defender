@@ -12,6 +12,7 @@ import {
 import { EndPointValidator } from './endpoint-validator';
 import { OperationConfig } from './operation-config';
 import { ParamParser } from './param-parser';
+import { RequestParser } from './request-parser';
 
 const debug = Debug('oa3-def');
 
@@ -100,12 +101,16 @@ export class SpecValidator {
         const pathObj: PathItemObject = this.document.paths[path];
         const operations = this.getDefinedHttpOperations(pathObj);
 
-        const reqBody = {};
-
         operations.forEach(opConfig => {
           const paramaterisedPath = ParamParser.generateParamaterisedPath(
             path,
             opConfig,
+          );
+
+          const reqBody = RequestParser.generateExampleBody(
+            path,
+            opConfig,
+            this.document,
           );
 
           // very rudimentary DI

@@ -156,7 +156,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Address'
       responses:
-        '200':
+        '201':
           description: The successfully added address entity
           content:
             application/json:
@@ -1182,6 +1182,8 @@ components:
           example: 'gemimapuddleduck@email.com'
         address:
           $ref: '#/components/schemas/Address'
+      additionalProperties: false
+
     Address:
       required:
         - addressType
@@ -1198,6 +1200,7 @@ components:
           example: 'home'
         houseNumber:
           type: integer
+          example: 55
         street1:
           type: string
           example: Atlantic Heights
