@@ -186,8 +186,6 @@ describe('SpecValidator', () => {
         '/potatoes',
         fakeApiUrl,
       );
-
-      console.log(validateSpy.args);
     });
   });
 });
