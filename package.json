@@ -1,6 +1,6 @@
 {
   "name": "oa3-api-defender",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "main": "dist/spec-validator.js",
   "bin": {
     "oa3-def": "dist/oa3-def.js"

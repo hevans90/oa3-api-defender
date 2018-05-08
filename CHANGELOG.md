@@ -1,3 +1,17 @@
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/hevans90/oa3-api-defender/compare/v1.5.1...v1.6.0) (2018-05-08)
+
+
+### Bug Fixes
+
+* prevent a crash with empty response bodies ([b9987ae](https://github.com/hevans90/oa3-api-defender/commit/b9987ae))
+
+
+### Features
+
+* recursive request-body parsing ([9235ef0](https://github.com/hevans90/oa3-api-defender/commit/9235ef0))
+* request body auto-generation ([1c09dae](https://github.com/hevans90/oa3-api-defender/commit/1c09dae))
+
 <a name="1.5.1"></a>
 ## [1.5.1](https://github.com/hevans90/oa3-api-defender/compare/v1.5.0...v1.5.1) (2018-05-02)
 
