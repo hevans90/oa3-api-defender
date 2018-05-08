@@ -16,7 +16,40 @@ info:
   description: 'Open API spec for testing purposes'
 
 paths:
-  /check_eligibility/:
+  /basic_endpoint/:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - card_number
+                - program
+              properties:
+                card_number:
+                  type: string
+                  example: '4234567890123456'
+                program:
+                  type: string
+                  example: 'nice'
+                numberExample:
+                  type: integer
+                  example: 42
+
+  /array_endpoint/:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                arr:
+                  type: array
+                  items:
+                    type: string
+                  example: ['item1', 'item2', 'item3']
+
+  /nested_endpoint/:
     post:
       requestBody:
         content:
@@ -90,16 +123,64 @@ describe('RequestParser', () => {
   });
 
   describe('generateExampleBody', () => {
-    it('should generate a valid request body from a path', () => {
+    it('should generate a basic request body of string props', () => {
       const pathObj: PathItemObject =
-        specValidator.document.paths['/check_eligibility/'];
+        specValidator.document.paths['/basic_endpoint/'];
       const operations = specValidator.getDefinedHttpOperations(pathObj);
       const postOp = operations.find(
         op => op.operation === 'post',
       ) as OperationConfig;
 
       const reqBody = RequestParser.generateExampleBody(
-        'check_eligibility',
+        'basic_endpoint',
+        postOp,
+        specValidator.document,
+      );
+
+      const assertedBody = {
+        card_number: '4234567890123456',
+        program: 'nice',
+        numberExample: 42,
+      };
+
+      expect(reqBody).toBeDefined();
+      expect(reqBody).toEqual(assertedBody);
+    });
+
+    it('should generate a request body with an array', () => {
+      const pathObj: PathItemObject =
+        specValidator.document.paths['/array_endpoint/'];
+      const operations = specValidator.getDefinedHttpOperations(pathObj);
+      const postOp = operations.find(
+        op => op.operation === 'post',
+      ) as OperationConfig;
+
+      const reqBody = RequestParser.generateExampleBody(
+        'array_endpoint',
+        postOp,
+        specValidator.document,
+      );
+
+      const assertedBody = {
+        arr: ['item1', 'item2', 'item3'],
+      };
+
+      console.log(reqBody);
+
+      expect(reqBody).toBeDefined();
+      expect(reqBody).toEqual(assertedBody);
+    });
+
+    it('should generate a complex nested request body', () => {
+      const pathObj: PathItemObject =
+        specValidator.document.paths['/nested_endpoint/'];
+      const operations = specValidator.getDefinedHttpOperations(pathObj);
+      const postOp = operations.find(
+        op => op.operation === 'post',
+      ) as OperationConfig;
+
+      const reqBody = RequestParser.generateExampleBody(
+        'nested_endpoint',
         postOp,
         specValidator.document,
       );
