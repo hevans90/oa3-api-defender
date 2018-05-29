@@ -41,4 +41,4 @@ Requests with path (`/path{id}`) or query (`/path?query=1&nice=2`) will be calle
 
 - ~~The Tool cannot currently handle paramaterised requests : `url/{id}` or `url/{id}/nestedpath`, I am working on a solution: grabbing example param values from the OA3 spec and automatically calling the endpoints with them.~~ Paramaterised (path + query only) requests are now implemented as of version 1.4.
 
-- The Tool cannot currently properly handle requests with request bodies, I am also working on this, though the solution to this is a little more involved - give me a few days :)
+- ~~The Tool cannot currently properly handle requests with request bodies, I am also working on this, though the solution to this is a little more involved - give me a few days :)~~ Request bodies are now supported as of version 1.6. Provide example values for body parameters, and the tool will automatically attempt to generate request bodies based on examples given. Body properties without examples will be ommitted from the generated body object, so make sure any required properties have an example specified.
