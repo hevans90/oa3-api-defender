@@ -1,1392 +1,182 @@
 openapi: 3.0.0
 # Added by API Auto Mocking Plugin
 servers:
-  - description: Local API
-    url: http://localhost:4040
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/tengroup/tenplatform-api/1.0.0
+    url: https://virtserver.swaggerhub.com/tengroup/tenplatform-api/0.0.2
 info:
-  description: A spec for the Ten Platform API.
-  version: "1.0.0"
+  description: This is the V3 API specification
+  version: "0.0.2"
   title: Ten Platform API
-  contact:
-    email: someone@your-company.com
-  license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 tags:
-  - name: plans
-    description: Member Plans
   - name: member
-    description: Member functionality
-  - name: restaurants
-    description: Restaurant entities
-  - name: celebrityChefs
-    description: Celebrity Chef entities
-  - name: events
-    description: Event entities
-  - name: artists
-    description: Artist entities
-  - name: brands
-    description: Brand entities
-  - name: benefits
-    description: Benefit entities
-  - name: search
-    description: Search functionality
+    description: Functionality related to a member
   - name: user
-    description: User functionality
-security:
-  - jwtTokenAuth: []
-
+    description: Functionality related to a user
 paths:
-  /plans:
-    get:
-      tags:
-        - plans
-      description: Returns an array of all membership plans
-      responses:
-        '200':
-          description: A JSON array of membership plans
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MembershipPlan'
-  /plans/{id}:
-    get:
-      tags:
-        - plans
-      description: Returns a single membership plan!
-      parameters:
-        - name: id
-          in: path
-          example: 0
-          description: id of plan to fetch
-          required: true
-          schema:
-            type: integer
-        - name: frequency
-          in: query
-          example: 'monthly'
-          description: Payment frequency(i.e monthly or yearly)
-          required: true
-          schema:
-            type: string
-        - name: promoCode
-          in: query
-          example: 'CODE_123'
-          description: A promo code to apply to a membership plan
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A single membership plan
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MembershipPlan'
-  /member:
-    get:
-      summary: Fetch the current member profile
-      description: Fetch the current member profile
-      tags:
-        - member
-      responses:
-        '200':
-          description: asd
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Member'
-
-  /member/eligibility:
-    get:
-      summary: Send a member eligibility query with criteria
-      tags:
-        - member
-      parameters:
-        - in: query
-          name: cardNumber
-          schema:
-            type: integer
-          required: true
-        - in: query
-          name: client
-          schema:
-            type: string
-            enum: [MasterCard, Visa]
-          required: true
-      responses:
-        '200':
-          description: Eligibility response
-          content:
-            application/json:
-              schema:
-                required:
-                  - isEligible
-                properties:
-                  isEligible:
-                    type: boolean
-                  reason:
-                    type: string
-  /member/addresses:
-    get:
-      summary: Fetch the current member's addresses
-      tags:
-        - member
-      responses:
-        '200':
-          description: A list of the current member's addresses
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Address'
+  /user/authenticate:
     post:
-      summary: Add a new address to the currently selected member
-      tags:
-        - member
-      requestBody:
-        description: The address to add
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Address'
-      responses:
-        '201':
-          description: The successfully added address entity
-          content:
-            application/json:
-              schema:
-                  $ref: '#/components/schemas/Address'
-  /member/addresses/{id}:
-    put:
-      summary: Edit a current member's address
-      tags:
-        - member
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        description: The updated address
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Address'
-      responses:
-        '200':
-          description: The successfully updated address entity
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Address'
-    delete:
-      summary: Delete a current member's address
-      tags:
-        - member
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Address deletion response
-          content:
-            application/json:
-              schema:
-                  type: boolean
-
-  /member/travellers:
-    get:
-      summary: Fetch the current member's travellers
-      description: Fetch the travellers associated with current member profile
-      tags:
-        - member
-      responses:
-        '200':
-          description: JSON array of travellers
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Traveller'
-    post:
-      summary: Add a new traveller to the currently selected member
-      description: Add a new traveller to the currently selected member
-      tags:
-       - member
-      requestBody:
-        description: traveller
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Traveller'
-      responses:
-        '200':
-          description: Successfully added traveller
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Traveller'
-  /member/travellers{id}:
-    put:
-      summary: Edit a current member's traveller
-      description: Update an individual traveller associated with a member
-      tags:
-       - member
-      parameters:
-        - name: id
-          required: true
-          schema:
-            required:
-              - id
-            properties:
-              id:
-                type: integer
-          in: path
-      requestBody:
-        description: traveller
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Traveller'
-      responses:
-        '200':
-          description: Successfully updated traveller
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Traveller'
-    delete:
-      summary: Delete a member traveller
-      description: Delete an individual traveller associated with a member
-      tags:
-       - member
-      parameters:
-        - name: id
-          required: true
-          schema:
-            required:
-              - id
-            properties:
-              id:
-                type: integer
-          in: path
-      responses:
-        '200':
-          description: Whether the traveller was successfully deleted or not
-          content:
-            application/json:
-              schema:
-                required:
-                  - deleted
-                properties:
-                  deleted:
-                    type: boolean
-
-  /member/occasions:
-    get:
-      summary: Fetch the current member's occasions
-      description: Fetch the occasions associated with current member
-      tags:
-        - member
-      responses:
-        '200':
-          description: JSON array of occasions
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Occasion'
-    post:
-      summary: Add a new occasion to the currently selected member
-      description: Add a new occasion to the currently selected member
-      tags:
-       - member
-      requestBody:
-        description: occasion
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Occasion'
-      responses:
-        '200':
-          description: Successfully added occasion
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Occasion'
-
-  /member/occasions{id}:
-    put:
-      summary: Edit a member occasion
-      description: Update an individual occasion associated with a member
-      tags:
-       - member
-      parameters:
-        - name: id
-          required: true
-          schema:
-            required:
-              - id
-            properties:
-              id:
-                type: integer
-          in: path
-      requestBody:
-        description: occasion
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Occasion'
-      responses:
-        '200':
-          description: Successfully updated occasion
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Occasion'
-    delete:
-      summary: Delete a member occasion
-      description: Delete an individual occasion associated with a member
-      tags:
-       - member
-      parameters:
-        - name: id
-          required: true
-          schema:
-            required:
-              - id
-            properties:
-              id:
-                type: integer
-          in: path
-      responses:
-        '200':
-          description: Whether the occasion was successfully deleted or not
-          content:
-            application/json:
-              schema:
-                required:
-                  - deleted
-                properties:
-                  deleted:
-                    type: boolean
-
-  /member/phoneNumbers:
-    get:
-      summary: Fetch the current member's phone numbers
-      description: Fetch the phone numbers associated with current member
-      tags:
-        - member
-      responses:
-        '200':
-          description: JSON array of phone numbers
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PhoneNumber'
-    post:
-      summary: Add a new phone number to the currently selected member
-      description: Add a new phone number to the currently selected member
-      tags:
-       - member
-      requestBody:
-        description: phone number
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PhoneNumber'
-      responses:
-        '200':
-          description: Successfully added phone number
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PhoneNumber'
-  /member/phoneNumbers{id}:
-    put:
-      summary: Edit a member phone number
-      description: Update an individual phone number associated with a member
-      tags:
-       - member
-      parameters:
-        - name: id
-          required: true
-          schema:
-            required:
-              - id
-            properties:
-              id:
-                type: integer
-          in: path
-      requestBody:
-        description: phone number
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PhoneNumber'
-      responses:
-        '200':
-          description: Successfully updated phone number
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PhoneNumber'
-    delete:
-      summary: Delete a member phone number
-      description: Delete an individual phone number associated with a member
-      tags:
-       - member
-      parameters:
-        - name: id
-          required: true
-          schema:
-            required:
-              - id
-            properties:
-              id:
-                type: integer
-          in: path
-      responses:
-        '200':
-          description: Whether the phone number was successfully deleted or not
-          content:
-            application/json:
-              schema:
-                required:
-                  - deleted
-                properties:
-                  deleted:
-                    type: boolean
-
-  /member/cards:
-    get:
-      description: Fetch the current member's payment cards
-      summary: Fetch the current member's payment cards
-      tags:
-        - member
-      responses:
-        '200':
-          description: Current member's payment cards
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObfuscatedPaymentCard'
-  /member/cards/{id}:
-    patch:
-      description: Update a current member's payment card
-      summary: Update a current member's payment card
-      tags:
-        - member
-      parameters:
-        - in: path
-          required: true
-          name: id
-          schema:
-            type: integer
-      requestBody:
-        description: Updates the current payment card
-        content:
-          application/json:
-            schema:
-              properties:
-                cardHolderName:
-                  type: string
-      responses:
-        '200':
-          description: Successfully updated payment card
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObfuscatedPaymentCard'
-    delete:
-      description: Delete a current member's payment card
-      summary: Delete a current member's payment card
-      tags:
-        - member
-      parameters:
-        - in: path
-          required: true
-          name: id
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Successfully deleted payment card
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ObfuscatedPaymentCard'
-
-  /member/activities:
-    get:
-      description: Fetch the current member's activities
-      summary: Fetch the current member's activities
-      tags:
-       - member
-      responses:
-        '200':
-          description: Current member's activities
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Activity'
-
-  /member/preferences:
-    get:
-      summary: Fetch the current member's preferences
-      description: Fetch the current member's preferences
-      tags:
-       - member
-      responses:
-        '200':
-          description: Current member's preferences
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Preference'
-
-    post:
-      summary: Add a preference to the currently selected member
-      description: Add a preference to the currently selected member
-      tags:
-       - member
-      requestBody:
-        description: preference
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Preference'
-      responses:
-        '200':
-          description: Successfully added preference
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Preference'
-  /member/preferences/{id}:
-    delete:
-      summary: Delete a member preference
-      description: Delete a member preference
-      tags:
-       - member
-      parameters:
-        - name: id
-          required: true
-          schema:
-            required:
-              - id
-            properties:
-              id:
-                type: integer
-          in: path
-      responses:
-        '200':
-          description: Whether the preferece was successfully deleted or not
-          content:
-            application/json:
-              schema:
-                required:
-                  - deleted
-                properties:
-                  deleted:
-                    type: boolean
-  /search-preferences:
-    get:
-      summary: Search for preferences
-      description: Search for preferences
-      tags:
-        - member
-
-      responses:
-        '200':
-          description: A list of returned preferences
-          content:
-            application/json:
-              schema:
-                allOf:
-                 - $ref: '#/components/schemas/PaginatedResponse'
-                 - type: object
-                   properties:
-                     results:
-                       type: array
-                       items:
-                         $ref: '#/components/schemas/Preference'
-  /user:
-    get:
-      summary: Currently authenticated user
-      description: Fetch the currently authenticated user
       tags:
         - user
-      responses:
-        '200':
-          description: Currently authenticated user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-
-    post:
-      summary: Create user
-      description: Create a new user
-      tags:
-        - user
+      summary: authenticate a user with username and password
       requestBody:
-        description: Details required to create a new user
         content:
           application/json:
             schema:
               required:
                 - username
                 - password
-                - member
               properties:
                 username:
                   type: string
                   example: 'user@email.com'
                 password:
                   type: string
-                  example: 'SuperSweetStrongPassword123!'
-                member:
-                  $ref: '#/components/schemas/Member'
-                membershipPlan:
-                  $ref: '#/components/schemas/MembershipPlan'
+                  example: 'SuperSweetPassword123!'
       responses:
         '200':
-          description: Created user
+          description: whether user is authenticated or not
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-
-  /user/authenticate:
-    post:
-      summary: Authenticate user
-      description: Authenticate a user
-      tags:
-        - user
-      requestBody:
-        description: Authentication credentials
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserAuthenticationPayload'
-
-      responses:
-        '200':
-          description: Authentication token
-          content:
-            application/json:
-              schema:
+                type: object
                 required:
+                  - user
                   - token
                 properties:
+                  user:
+                    $ref: '#/components/schemas/User'
                   token:
                     type: string
-
-  /user/activate:
-    post:
-      summary: Activate user
-      description: Activate a user
+                    example: 'JWT 12341324-234324-2342'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /user/logout:
+    delete:
+      security:
+      - jwtAuth: []
       tags:
         - user
-      requestBody:
-        description: User activation payload
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserActivationPayload'
+      summary: logout currently logged in user
       responses:
-        '200':
-          description: The activated user
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-  /user/changeEmail:
-    post:
-      summary: Change user email
-      description: Change the currently authenticated user's email
-      tags:
-        - user
-      requestBody:
-        description: New email address
-        content:
-          application/json:
-            schema:
-              required:
-                - emailAddress
-              properties:
-                emailAddress:
-                  type: string
-                  example: newEmail@email.com
-      responses:
-        '200':
-          description: Whether the user is activated successfully or not
-          content:
-            application/json:
-              schema:
-                required:
-                  - activated
-                properties:
-                  activated:
-                    type: boolean
-  /user/changePassword:
-    post:
-      summary: Change user password
-      description: Change the currently authenticated user's password
-      tags:
-        - user
-      requestBody:
-        description: Old and new password
-        content:
-          application/json:
-            schema:
-              required:
-                - oldPassword
-                - newPassword
-              properties:
-                oldPassword:
-                  type: string
-                  example: lameOldPassword123!
-                newPassword:
-                  type: string
-                  example: newSwankyPassword123!
-      responses:
-        '200':
-          description: Whether the user's password is changed successfully or not
-          content:
-            application/json:
-              schema:
-                required:
-                  - changed
-                properties:
-                  changed:
-                    type: boolean
-  /user/requestPasswordReset:
-    post:
-      summary: Request to reset user password
-      description: Request a link to reset currently authenticated user's password
-      tags:
-        - user
-      requestBody:
-        description: Email address
-        content:
-          application/json:
-            schema:
-              required:
-                - emailAddress
-              properties:
-                emailAddress:
-                  type: string
-                  example: forgetfulfred@email.com
-      responses:
-        '200':
-          description: Empty response to avoid exposing members' email addresses
-  /user/resetPassword:
-    post:
-      summary: Reset user password
-      description: Reset a user's password via a reset password token
-      tags:
-        - user
-      requestBody:
-        description: New password and reset password token
-        content:
-          application/json:
-            schema:
-              required:
-                - token
-                - newPassword
-              properties:
-                token:
-                  type: string
-                  example: '97-4rr-53ac091b31ab98ab9261'
-                newPassword:
-                  type: string
-                  example: 'SwishNewPassword123!'
-      responses:
-        '200':
-          description: Whether password was changed successfully or not
-          content:
-            application/json:
-              schema:
-                required:
-                  - changed
-                properties:
-                  changed:
-                    type: boolean
-  /search:
+        '204':
+          description: successful logout
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+  /member/eligibility:
     get:
       tags:
-        - search
-      description: Global search
+        - member
+      summary: eligibility check
+      operationId: eligibilityCheck
+      description: |
+        By passing in an eligibility type and value, you can check whether a user is eligible for registration
       parameters:
         - in: query
-          name: category
+          name: identifierType
+          description: type of eligibility check
+          required: true
           schema:
             type: string
-            enum: [dining, events, benefits]
-          description: The search category (currently restricted to modules, i.e. 'dining').
-        - in: query
-          name: searchPhrase
-          schema:
-            type: string
-          description: The search phrase.
-      responses:
-        '200':
-          description: A list of search results.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedResponse'
+            enum: [cardNumber, phoneNumber]
+          example: 'cardNumber'
 
-  /restaurants:
-    get:
-      tags:
-        - restaurants
-      description: Returns all restaurants
-      summary: Find Restaurants
+        - in: query
+          name: identifierValue
+          description: value of eligibility check
+          required: true
+          schema:
+            type: string
+          example: '98723498792'
+
       responses:
         '200':
-          description: A list of restaurants.
+          description: eligibility check passed
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Restaurant'
-  /restaurants/{id}:
-    get:
-      tags:
-        - restaurants
-      description: Returns restaurants based on ID
-      summary: Find restaurants by ID
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: restaurant response
-          content:
-            '*/*' :
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Restaurant'
-  /celebrityChefs:
-    get:
-      tags:
-        - celebrityChefs
-      description: Returns all Celebrity Chefs
-      summary: Find Celebrity Chefs
-      responses:
-        '200':
-          description: A list of Celebrity Chefs.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CelebrityChef'
-  /celebrityChefs/{id}:
-    get:
-      tags:
-        - celebrityChefs
-      description: Returns Celebrity Chefs based on ID
-      summary: Find Celebrity Chefs by ID
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: A single Celebrity Chef.
-          content:
-            '*/*' :
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CelebrityChef'
-  /events:
-    get:
-      tags:
-        - events
-      description: Returns all Events
-      summary: Find Events
-      responses:
-        '200':
-          description: A list of Events.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Event'
-  /events/{id}:
-    get:
-      tags:
-        - events
-      description: Returns Events based on ID
-      summary: Find Events by ID
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: A single Event.
-          content:
-            '*/*' :
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Event'
-  /artists:
-    get:
-      tags:
-        - artists
-      description: Returns all Artists
-      summary: Find Artists
-      responses:
-        '200':
-          description: A list of Artists.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Artist'
-  /artists/{id}:
-    get:
-      tags:
-        - artists
-      description: Returns Artists based on ID
-      summary: Find Artists by ID
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: A single Artist.
-          content:
-            '*/*' :
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Artist'
-  /brands:
-    get:
-      tags:
-        - brands
-      description: Returns all Brands
-      summary: Find Brands
-      responses:
-        '200':
-          description: A list of Brands.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Brand'
-  /brands/{id}:
-    get:
-      tags:
-        - brands
-      description: Returns Brands based on ID
-      summary: Find Brands by ID
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: A single Brand.
-          content:
-            '*/*' :
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Brand'
-  /benefits:
-    get:
-      tags:
-        - benefits
-      description: Returns all Benefits
-      summary: Find Benefits
-      responses:
-        '200':
-          description: A list of Benefits.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Benefit'
-  /benefits/{id}:
-    get:
-      tags:
-        - benefits
-      description: Returns Benefits based on ID
-      summary: Find Benefits by ID
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: A single Benefit.
-          content:
-            '*/*' :
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Benefit'
+                type: object
+                required:
+                  - isEligible
+                  - extremelyRequiredProperty
+                properties:
+                  isEligible:
+                    type: string
+                  extremelyRequiredProperty:
+                    type: boolean
+                additionalProperties: false
+
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+
 components:
   securitySchemes:
-    jwtTokenAuth:
-      type: apiKey
-      in: header
-      name: jwtTokenAuth
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    ErrorResponse:
+      description: Error response with arrays of ApiGenericErrors and ApiValidationErrors
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiGenericError'
+              validationErrors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiValidationError'
+
   schemas:
-    MembershipPlan:
-      required:
-        - id
-        - name
-        - description
-        - annualMembershipPrice
-        - monthlyMembershipPrice
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-          example: 'Classic'
-        description:
-          type: string
-          example: Our most popular option
-        annualMembershipPrice:
-          $ref: '#/components/schemas/Price'
-        monthlyMembershipPrice:
-          $ref: '#/components/schemas/Price'
-        promoCode:
-          type: string
-          example: EARLYBIRD
-        totalCost:
-          $ref: '#/components/schemas/Price'
-    Price:
-      required:
-        - amount
-        - currencyCode
-      properties:
-        amount:
-          type: number
-          example: 5.35
-        currencyCode:
-          type: string
-          example: "GBP"
     User:
       required:
-        - id
-        - email
+        - username
+        - memberId
       properties:
-        id:
-          type: integer
-        email:
+        username:
           type: string
-          example: user@email.com
+          example: 'user@email.com'
+        memberId:
+          type: string
+          example: '123123-123'
 
-    UserAuthenticationPayload:
+    ApiGenericError:
       required:
-        - userName
-        - password
+        - code
+        - message
+        - displayMessage
       properties:
-        userName:
+        code:
           type: string
-        password:
+          example: error code
+        message:
           type: string
-    UserActivationPayload:
-      required:
-        - activationToken
-        - password
-      properties:
-        activationToken:
+          example: human readable message
+        displayMessage:
           type: string
-        password:
-          type: string
+          example: localized error that can be shown to users
 
-    Member:
-      required:
-        - id
-        - title
-        - firstName
-        - lastName
-        - emailAddress
-        - address
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-          enum: [Mr., Mrs., Ms., Miss]
-        firstName:
-          type: string
-          example: 'Gemima'
-        lastName:
-          type: string
-          example: 'Puddleduck'
-        emailAddress:
-          type: string
-          example: 'gemimapuddleduck@email.com'
-        address:
-          $ref: '#/components/schemas/Address'
-      additionalProperties: false
-
-    Address:
-      required:
-        - addressType
-        - houseNumber
-        - street1
-        - street2
-        - city
-        - state
-        - country
-        - postcode
-      properties:
-        addressType:
-          type: string
-          example: 'home'
-        houseNumber:
-          type: integer
-          example: 55
-        street1:
-          type: string
-          example: Atlantic Heights
-        street2:
-          type: string
-          example: Barnacle Square
-        city:
-          type: string
-          example: London
-        state:
-          type: string
-          example: London
-        country:
-          type: string
-          example: UK
-        postcode:
-          type: string
-          example: BA12GZ
-    Traveller:
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          example: Joe Blogs
-    PhoneNumber:
-      required:
-        - id
-        - number
-        - countryCallingCode
-      properties:
-        id:
-          type: integer
-        number:
-          type: string
-          example: 07700900975
-        countryCallingCode:
-          type: string
-          example: 'UK'
-    Occasion:
-      required:
-        - id
-        - name
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          example: Birthday
-    Restaurant:
+    ApiValidationError:
       allOf:
-       - $ref: '#/components/schemas/EntityDetails'
-       - type: object
-         properties:
-           name:
-             example: 'Sushi Samba'
-           description:
-             example: 'The ultimate sushi experience.'
-    CelebrityChef:
-      allOf:
-       - $ref: '#/components/schemas/EntityDetails'
-       - type: object
-         properties:
-           name:
-             example: 'Gordon Ramsey'
-           description:
-             example: 'The meanest chef around.'
-    Event:
-      allOf:
-       - $ref: '#/components/schemas/EntityDetails'
-       - type: object
-         properties:
-           name:
-             example: 'Ed Sheeran feat. Teletubbies live at the 02'
-           description:
-             example: 'A seriously meta musical experience.'
-    Artist:
-      allOf:
-       - $ref: '#/components/schemas/EntityDetails'
-       - type: object
-         properties:
-           name:
-             example: 'Pendulum'
-           description:
-             example: 'The best DnB band ever.'
-    Brand:
-      allOf:
-       - $ref: '#/components/schemas/EntityDetails'
-       - type: object
-         properties:
-           name:
-             example: 'Apple'
-           description:
-             example: 'The most overpriced & overrated tech ever :D.'
-    Benefit:
-      allOf:
-       - $ref: '#/components/schemas/EntityDetails'
-       - type: object
-         properties:
-           name:
-             example: 'Free Nandos Butterfly Burger (extra-hot ONLY)'
-           description:
-             example: 'No cowards allowed.'
-    EntityDetails:
-      type: object
+        - $ref: '#/components/schemas/ApiGenericError'
       required:
-        - name
-        - id
+        - fieldName
       properties:
-        id:
-          type: integer
-          description: entity ID
-          example: 0
-        name:
+        fieldName:
           type: string
-          description: entity name
-          example: 'name of entity'
-        description:
-          type: string
-          description: 'entity description'
-          example: 'This entity has a very nice, long, punctuated description.'
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/Image'
-    Image:
-      type: object
-      properties:
-        url:
-          type: string
-          description: 'Absolute URL for the image'
-          example: 'https://imgur.com/gallery/u1SZp'
-    Preference:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-    Activity:
-      type: object
-      properties:
-        id:
-          type: integer
-        startDate:
-          type: string
-          format: date-time
-          example: 'YYYY-MM-DDTHH:mm:ss.sssZ'
-        type:
-          type: string
-          enum: [FlightBookingTPActivity, HotelBookingTPActivity, CarHireBookingTPActivity, TravelBriefingTMActivity]
-        iconClass:
-          type: string
-        booking:
-          type: object
-    ObfuscatedPaymentCard:
-      type: object
-      properties:
-        cardNumber:
-          type: string
-          example: '************7777'
-          minLength: 16
-          maxLength: 16
-        cardHolderName:
-          type: string
-    PaginatedResponse:
-      type: object
-      description: 'A generic paginated response'
-      required:
-        - pageSize
-        - current
-      properties:
-        pageSize:
-          type: integer
-          default: 12
-        current:
-          type: integer
-        next:
-          type: string
-        previous:
-          type: string
-        results:
-          type: array
-          items:
-            type: object
-            description: 'The result entity type (override this)'
+          example: the name of the input field affected
