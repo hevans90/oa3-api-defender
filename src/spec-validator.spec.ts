@@ -2,7 +2,6 @@ import { SpecValidator } from './spec-validator';
 import * as mockFs from 'mock-fs';
 import { OpenApiDocument } from 'express-openapi-validate';
 import { PathItemObject } from 'express-openapi-validate/dist/OpenApiDocument';
-import { EndPointValidator } from './endpoint-validator';
 
 const fakeApiUrl = 'nice-api-mate';
 const fakeDir = 'FAKE__DIR';
@@ -51,7 +50,7 @@ components:
 describe('SpecValidator', () => {
   let specValidator: SpecValidator;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     mockFs({
       [fakeDir]: {
         [fakeSpecFileName]: fakeSpec,
@@ -69,6 +68,7 @@ describe('SpecValidator', () => {
         },
       },
     );
+    await specValidator.setupSpecValidator();
   });
 
   afterEach(() => {
@@ -78,25 +78,21 @@ describe('SpecValidator', () => {
   it('should create', () => {
     expect(specValidator).toBeDefined();
   });
-  it('should NOT create if spec cannot be found', () => {
-    expect(
-      () => new SpecValidator(`${fakeDir}/invalid_file_path.yaml`, ''),
-    ).toThrow();
+  it('should NOT create if spec cannot be found', async () => {
+    const newSpecValidator = new SpecValidator(
+      `${fakeDir}/invalid_file_path.yaml`,
+      '',
+    );
+    try {
+      await newSpecValidator.setupSpecValidator();
+    } catch (e) {
+      expect(e).toBeDefined();
+      expect(e.toString()).toEqual(
+        'Error: No such file or directory: undefined',
+      );
+    }
   });
 
-  describe('loadOpenApiSpec', () => {
-    it('should load valid OA3 specs successfully', () => {
-      const doc: OpenApiDocument = specValidator.loadOpenApiSpec();
-
-      expect(doc).toBeDefined();
-      expect(Object.keys(doc.paths)).toContain('/potatoes');
-    });
-    it('should NOT load invalid OA3 specs successfully', () => {
-      expect(
-        () => new SpecValidator(`${fakeDir}/broken-spec.yaml`, ''),
-      ).toThrow();
-    });
-  });
   describe('getDefinedHttpOperations', () => {
     let mockPathItemObject: PathItemObject = {
       get: { responses: '200' },

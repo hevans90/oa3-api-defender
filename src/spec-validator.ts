@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as jsYaml from 'js-yaml';
 import * as colors from 'colors';
 import * as Debug from 'debug';
+import * as requestPromise from 'request-promise-native';
 import { OpenApiValidator, OpenApiDocument } from 'express-openapi-validate';
 import {
   Operation,
@@ -13,7 +14,6 @@ import { EndPointValidator } from './endpoint-validator';
 import { OperationConfig } from './operation-config';
 import { ParamParser } from './param-parser';
 import { RequestParser } from './request-parser';
-
 const debug = Debug('oa3-def');
 
 /**
@@ -36,11 +36,6 @@ export class SpecValidator {
     if (endPointValidator) {
       this.endPointValidator = endPointValidator;
     }
-
-    this._document = this.loadOpenApiSpec();
-    this._oa3Validator = new OpenApiValidator(this.document, {
-      ajvOptions: { allErrors: true, verbose: true },
-    });
   }
 
   public endPointValidator: any | undefined;
@@ -49,26 +44,54 @@ export class SpecValidator {
   private apiUrl: string;
   private auth: string | undefined;
 
-  private _document: OpenApiDocument;
+  private _document: OpenApiDocument | undefined = undefined;
   get document(): OpenApiDocument {
-    return this._document;
+    return this._document as OpenApiDocument;
+  }
+  set document(doc: OpenApiDocument) {
+    this._document = doc;
   }
 
-  private _oa3Validator: OpenApiValidator;
+  private _oa3Validator: OpenApiValidator | undefined;
   get oa3Validator(): OpenApiValidator {
-    return this._oa3Validator;
+    return this._oa3Validator as OpenApiValidator;
+  }
+  set oa3Validator(val: OpenApiValidator) {
+    this._oa3Validator = val;
+  }
+
+  public async setupSpecValidator(): Promise<boolean> {
+    try {
+      this.document = await this.loadOpenApiSpec();
+
+      this.oa3Validator = new OpenApiValidator(this.document, {
+        ajvOptions: { allErrors: true, verbose: true },
+      });
+
+      return Promise.resolve(true);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  private async loadOpenApiSpec(): Promise<OpenApiDocument> {
+    if (this.specPath.startsWith('http')) {
+      const doc = await this.loadOpenApiSpecAsync(this.specPath);
+      return Promise.resolve(jsYaml.safeLoad(doc) as OpenApiDocument);
+    } else {
+      return Promise.resolve(this.loadOpenApiSpecSync(this.specPath));
+    }
   }
 
   /**
    * Parses an OA3 spec using jsYaml & fs
    */
-  public loadOpenApiSpec(): OpenApiDocument | never {
+  private loadOpenApiSpecSync(specPath: string): OpenApiDocument | never {
     let doc: OpenApiDocument | undefined;
-
     try {
-      debug(`Trying to parse spec: ${this.specPath}...`);
+      debug(`Trying to parse spec: ${specPath}...`);
       doc = jsYaml.safeLoad(
-        fs.readFileSync(this.specPath, 'utf-8'),
+        fs.readFileSync(specPath, 'utf-8'),
       ) as OpenApiDocument;
       debug('Success!');
       return doc;
@@ -83,6 +106,10 @@ export class SpecValidator {
         throw err;
       }
     }
+  }
+
+  private async loadOpenApiSpecAsync(specUrl: string): Promise<string> {
+    return requestPromise(specUrl);
   }
 
   /**
@@ -117,14 +144,14 @@ export class SpecValidator {
           if (this.endPointValidator) {
             debug(`opConfig: ${JSON.stringify(opConfig, null, 2)}`);
             this.endPointValidator.validate(
-              this._oa3Validator,
+              this.oa3Validator,
               opConfig,
               path,
               this.apiUrl,
             );
           } else {
             EndPointValidator.validate(
-              this._oa3Validator,
+              this.oa3Validator,
               opConfig,
               path,
               paramaterisedPath,

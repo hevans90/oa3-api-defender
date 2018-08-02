@@ -44,7 +44,8 @@ commander
       );
       return;
     } else {
-      new SpecValidator(cmd.specPath, cmd.url, cmd.auth).validateSpec();
+      const validator = new SpecValidator(cmd.specPath, cmd.url, cmd.auth);
+      validator.setupSpecValidator().then(() => validator.validateSpec());
     }
   });
 

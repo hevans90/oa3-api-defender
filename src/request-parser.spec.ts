@@ -98,7 +98,7 @@ paths:
           `;
 
 describe('RequestParser', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockFs({
       [fakeDir]: {
         [fakeSpecFileName]: fakeSpec,
@@ -115,7 +115,7 @@ describe('RequestParser', () => {
       },
     );
 
-    specValidator.loadOpenApiSpec();
+    await specValidator.setupSpecValidator();
   });
 
   afterEach(() => {
